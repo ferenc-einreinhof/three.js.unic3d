@@ -1,5 +1,6 @@
 import { Material } from './Material.js';
 import { BasicDepthPacking } from '../constants.js';
+import { Vector2 } from '../math/Vector2.js';  
 
 /**
  * A material for drawing geometry by depth. Depth is based off of the camera
@@ -49,6 +50,11 @@ class MeshDepthMaterial extends Material {
 		 * @default null
 		 */
 		this.map = null;
+		this.mapSaturation = 1.0;
+		this.mapLevel = new Vector2(0.0, 1.0);
+		this.aoMapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.mipMapBias = 0;
 
 		/**
 		 * The alpha map is a grayscale texture that controls the opacity across the
@@ -128,6 +134,11 @@ class MeshDepthMaterial extends Material {
 		this.depthPacking = source.depthPacking;
 
 		this.map = source.map;
+		this.mapSaturation = source.mapSaturation;
+		this.mapLevel.copy(source.mapLevel);
+		this.aoMapLevel.copy(source.aoMapLevel);
+		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.mipMapBias = source.mipMapBias;
 
 		this.alphaMap = source.alphaMap;
 

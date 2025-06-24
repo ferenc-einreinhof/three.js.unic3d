@@ -14,11 +14,14 @@ class AnimationAction {
 	 * @param {?Object3D} [localRoot=null] - The root object on which this action is performed.
 	 * @param {(NormalAnimationBlendMode|AdditiveAnimationBlendMode)} [blendMode] - The blend mode.
 	 */
-	constructor( mixer, clip, localRoot = null, blendMode = clip.blendMode ) {
+	constructor( mixer, clip, localRoot = null, blendMode = clip.blendMode, offset=0, duration=0 ) {
 
 		this._mixer = mixer;
 		this._clip = clip;
 		this._localRoot = localRoot;
+
+		this._offset = offset || 0;
+		this._clipDuration = duration || clip.duration || 0;
 
 		/**
 		 * Defines how the animation is blended/combined when two or more animations
@@ -587,7 +590,7 @@ class AnimationAction {
 		// apply time scale and advance time
 
 		deltaTime *= this._updateTimeScale( time );
-		const clipTime = this._updateTime( deltaTime );
+		const clipTime = this._updateTime( deltaTime ) + this._offset * Math.sign(this.timeScale);
 
 		// note: _updateTime may disable the action resulting in
 		// an effective weight of 0
@@ -710,7 +713,7 @@ class AnimationAction {
 
 	_updateTime( deltaTime ) {
 
-		const duration = this._clip.duration;
+		const duration = this._clipDuration;
 		const loop = this.loop;
 
 		let time = this.time + deltaTime;
@@ -738,12 +741,19 @@ class AnimationAction {
 			}
 
 			handle_stop: {
+				const scaledDuration = Math.abs(duration * this.timeScale);
 
-				if ( time >= duration ) {
+				if ( time >= scaledDuration ) {
 
 					time = duration;
 
-				} else if ( time < 0 ) {
+				} else if ( time <= -scaledDuration ) {
+
+					time = -duration;
+
+				} else if ( time < 0 && this.timeScale>=0 ) {
+
+					this.time = time += time < 0 ? duration : 0;
 
 					time = 0;
 
@@ -773,6 +783,8 @@ class AnimationAction {
 
 				// just started
 
+				loopCount = 0;
+
 				if ( deltaTime >= 0 ) {
 
 					loopCount = 0;
@@ -795,21 +807,23 @@ class AnimationAction {
 
 				// wrap around
 
-				const loopDelta = Math.floor( time / duration ); // signed
-				time -= duration * loopDelta;
+				const loopDelta = Math.floor( Math.abs(time) / duration ); // signed
+				time = deltaTime < 0 ?  duration - (Math.abs(time) - duration * loopDelta) : time - duration * loopDelta;
 
-				loopCount += Math.abs( loopDelta );
+				loopCount += loopDelta;
 
 				const pending = this.repetitions - loopCount;
 
 				if ( pending <= 0 ) {
+
+					loopCount = this.repetitions;
 
 					// have to stop (switch state, clamp time, fire event)
 
 					if ( this.clampWhenFinished ) this.paused = true;
 					else this.enabled = false;
 
-					time = deltaTime > 0 ? duration : 0;
+					time = pingPong === deltaTime > 0 ? 0 : duration;
 
 					this.time = time;
 

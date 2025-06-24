@@ -87,13 +87,17 @@ const ShaderLib = {
 			UniformsLib.displacementmap,
 			UniformsLib.roughnessmap,
 			UniformsLib.metalnessmap,
+			UniformsLib.detailnormalmap,
 			UniformsLib.fog,
 			UniformsLib.lights,
 			{
 				emissive: { value: /*@__PURE__*/ new Color( 0x000000 ) },
 				roughness: { value: 1.0 },
+				fresnel: { value: 1.0 },
 				metalness: { value: 0.0 },
-				envMapIntensity: { value: 1 }
+				envMapIntensity: { value: 1 },
+				envMapDiffuseMultiplier: { value: 1 },
+				contourFade: { value: 0 },
 			}
 		] ),
 

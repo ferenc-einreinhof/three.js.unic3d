@@ -2,6 +2,7 @@ export default /* glsl */`
 #ifdef USE_ENVMAP
 
 	uniform float envMapIntensity;
+	uniform float envMapDiffuseMultiplier;
 	uniform float flipEnvMap;
 	uniform mat3 envMapRotation;
 

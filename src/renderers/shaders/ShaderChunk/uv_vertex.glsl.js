@@ -49,6 +49,11 @@ export default /* glsl */`
 	vMetalnessMapUv = ( metalnessMapTransform * vec3( METALNESSMAP_UV, 1 ) ).xy;
 
 #endif
+#ifdef USE_DETAIL_NORMALMAP
+
+	vDetailNormalMapUv = ( detailNormalMapTransform * vec3( DETAIL_NORMALMAP_UV, 1 ) ).xy;
+
+#endif
 #ifdef USE_ROUGHNESSMAP
 
 	vRoughnessMapUv = ( roughnessMapTransform * vec3( ROUGHNESSMAP_UV, 1 ) ).xy;

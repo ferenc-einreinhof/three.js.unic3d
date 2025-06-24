@@ -298,7 +298,7 @@ class PropertyBinding {
 
 					}
 
-					const result = searchNodeSubtree( childNode.children );
+					const result = childNode.children ? searchNodeSubtree( childNode.children ) : null;
 
 					if ( result ) return result;
 

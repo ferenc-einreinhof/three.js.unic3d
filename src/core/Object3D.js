@@ -6,6 +6,7 @@ import { Euler } from '../math/Euler.js';
 import { Layers } from './Layers.js';
 import { Matrix3 } from '../math/Matrix3.js';
 import { generateUUID } from '../math/MathUtils.js';
+import { Color } from '../math/Color.js';
 
 let _object3DId = 0;
 
@@ -310,6 +311,13 @@ class Object3D extends EventDispatcher {
 		 * @default true
 		 */
 		this.frustumCulled = true;
+
+		this.wireframe = false;
+		this.wireframeLinewidth = 1;
+		this.wireframeFrontColor = new Color(0x666680);
+		this.wireframeBackColor = new Color(0xccccd9);
+		this.wireframeInheritParams = true;
+		this.lockToCamera = 0;
 
 		/**
 		 * This value allows the default rendering order of scene graph objects to be
@@ -1127,7 +1135,7 @@ class Object3D extends EventDispatcher {
 
 		if ( this.matrixAutoUpdate ) this.updateMatrix();
 
-		if ( this.matrixWorldNeedsUpdate || force ) {
+		if ( (this.matrixWorldNeedsUpdate || force) && !this.lockToCamera ) {
 
 			if ( this.matrixWorldAutoUpdate === true ) {
 
@@ -1184,13 +1192,17 @@ class Object3D extends EventDispatcher {
 
 		if ( this.matrixWorldAutoUpdate === true ) {
 
-			if ( this.parent === null ) {
+			if (!this.lockToCamera) {
 
-				this.matrixWorld.copy( this.matrix );
-
-			} else {
-
-				this.matrixWorld.multiplyMatrices( this.parent.matrixWorld, this.matrix );
+				if ( this.parent === null ) {
+	
+					this.matrixWorld.copy( this.matrix );
+	
+				} else {
+	
+					this.matrixWorld.multiplyMatrices( this.parent.matrixWorld, this.matrix );
+	
+				}
 
 			}
 
@@ -1263,9 +1275,17 @@ class Object3D extends EventDispatcher {
 		if ( this.name !== '' ) object.name = this.name;
 		if ( this.castShadow === true ) object.castShadow = true;
 		if ( this.receiveShadow === true ) object.receiveShadow = true;
+		if ( this.wireframe === true ) object.wireframe = true;
+		if ( this.wireframeLinewidth !== 1 ) object.wireframeLinewidth = 1;
+		if ( this.wireframeFrontColor && this.wireframeFrontColor.isColor ) object.wireframeFrontColor = this.wireframeFrontColor.getHex();
+		if ( this.wireframeBackColor && this.wireframeBackColor.isColor ) object.wireframeBackColor = this.wireframeBackColor.getHex();
+		if ( this.wireframeInheritParams === true ) object.wireframeInheritParams = true;
+		if ( this.lockToCamera !== 0 ) object.lockToCamera = this.lockToCamera;
+
 		if ( this.visible === false ) object.visible = false;
 		if ( this.frustumCulled === false ) object.frustumCulled = false;
 		if ( this.renderOrder !== 0 ) object.renderOrder = this.renderOrder;
+		if ( this.keepExported === true ) object.keepExported = true;
 		if ( Object.keys( this.userData ).length > 0 ) object.userData = this.userData;
 
 		object.layers = this.layers.mask;
@@ -1439,7 +1459,11 @@ class Object3D extends EventDispatcher {
 
 				for ( let i = 0, l = this.material.length; i < l; i ++ ) {
 
-					uuids.push( serialize( meta.materials, this.material[ i ] ) );
+					if (!this.material.skipExport) {
+
+						uuids.push( serialize( meta.materials, this.material[ i ] ) );
+
+					}
 
 				}
 
@@ -1447,7 +1471,11 @@ class Object3D extends EventDispatcher {
 
 			} else {
 
-				object.material = serialize( meta.materials, this.material );
+				if (!this.material.skipExport) {
+
+					object.material = serialize( meta.materials, this.material );
+
+				}
 
 			}
 
@@ -1562,6 +1590,9 @@ class Object3D extends EventDispatcher {
 		this.matrix.copy( source.matrix );
 		this.matrixWorld.copy( source.matrixWorld );
 
+		this.wireframeFrontColor.copy( source.wireframeFrontColor );
+		this.wireframeBackColor.copy( source.wireframeBackColor );
+
 		this.matrixAutoUpdate = source.matrixAutoUpdate;
 
 		this.matrixWorldAutoUpdate = source.matrixWorldAutoUpdate;
@@ -1572,6 +1603,10 @@ class Object3D extends EventDispatcher {
 
 		this.castShadow = source.castShadow;
 		this.receiveShadow = source.receiveShadow;
+		this.wireframe = source.wireframe;
+		this.wireframeInheritParams = source.wireframeInheritParams;
+		this.wireframeLinewidth = source.wireframeLinewidth;
+		this.lockToCamera = source.lockToCamera;   
 
 		this.frustumCulled = source.frustumCulled;
 		this.renderOrder = source.renderOrder;

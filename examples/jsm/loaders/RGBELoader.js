@@ -3,6 +3,7 @@ import {
 	DataUtils,
 	FloatType,
 	HalfFloatType,
+	UnsignedByteType,
 	LinearFilter,
 	LinearSRGBColorSpace
 } from 'three';
@@ -419,6 +420,13 @@ class RGBELoader extends DataTextureLoader {
 
 				data = halfArray;
 				type = HalfFloatType;
+				break;
+
+			case UnsignedByteType:
+
+				numElements = image_rgba_data.length / 4;
+				data = image_rgba_data;
+				type = UnsignedByteType;
 				break;
 
 			default:

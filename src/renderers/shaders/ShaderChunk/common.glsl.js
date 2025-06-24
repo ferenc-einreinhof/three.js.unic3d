@@ -116,9 +116,13 @@ vec3 F_Schlick( const in vec3 f0, const in float f90, const in float dotVH ) {
 
 	// Optimized variant (presented by Epic at SIGGRAPH '13)
 	// https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
-	float fresnel = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
+	float fresnelFactor = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
+	#ifdef STANDARD
+		fresnelFactor *= fresnel;
+	#endif
 
-	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
+
+	return f0 * ( 1.0 - fresnelFactor ) + ( f90 * fresnelFactor );
 
 } // validated
 
@@ -129,9 +133,19 @@ float F_Schlick( const in float f0, const in float f90, const in float dotVH ) {
 
 	// Optimized variant (presented by Epic at SIGGRAPH '13)
 	// https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
-	float fresnel = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
+	float fresnelFactor = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
+	#ifdef STANDARD
+		fresnelFactor *= fresnel;
+	#endif
 
-	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
+
+	return f0 * ( 1.0 - fresnelFactor ) + ( f90 * fresnelFactor );
 
 } // validated
+
+#if defined( USE_MIPMAPBIAS )
+	uniform float mipMapBias;
+	#undef texture2D
+	#define texture2D(a,b) texture(a, b, mipMapBias)
+#endif
 `;

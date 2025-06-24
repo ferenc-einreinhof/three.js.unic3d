@@ -1,6 +1,7 @@
 export const vertex = /* glsl */`
 #define STANDARD
 
+uniform float fresnel;
 varying vec3 vViewPosition;
 
 #ifdef USE_TRANSMISSION
@@ -70,6 +71,7 @@ export const fragment = /* glsl */`
 uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform float roughness;
+uniform float fresnel;
 uniform float metalness;
 uniform float opacity;
 
@@ -127,6 +129,10 @@ uniform float opacity;
 	#endif
 #endif
 
+#ifdef CONTOUR_FADE
+	uniform float contourFade;
+#endif
+
 varying vec3 vViewPosition;
 
 #include <common>
@@ -157,6 +163,7 @@ varying vec3 vViewPosition;
 #include <iridescence_pars_fragment>
 #include <roughnessmap_pars_fragment>
 #include <metalnessmap_pars_fragment>
+#include <detail_normalmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
 
@@ -178,6 +185,7 @@ void main() {
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>
 	#include <normal_fragment_maps>
+	#include <detail_normalmap_fragment>
 	#include <clearcoat_normal_fragment_begin>
 	#include <clearcoat_normal_fragment_maps>
 	#include <emissivemap_fragment>
@@ -190,6 +198,7 @@ void main() {
 
 	// modulation
 	#include <aomap_fragment>
+	#include <detail_normalmap_ao_fragment>
 
 	vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
 	vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
@@ -216,6 +225,10 @@ void main() {
 
 		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + ( clearcoatSpecularDirect + clearcoatSpecularIndirect ) * material.clearcoat;
 
+	#endif
+
+	#ifdef CONTOUR_FADE
+		diffuseColor.a *= max(0.0, pow(dot(geometryViewDir, geometryNormal), contourFade));
 	#endif
 
 	#include <opaque_fragment>

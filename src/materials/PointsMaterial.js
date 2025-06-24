@@ -1,5 +1,6 @@
 import { Material } from './Material.js';
 import { Color } from '../math/Color.js';
+import { Vector2 } from '../math/Vector2.js'; 
 
 /**
  * A material for rendering point primitives.
@@ -69,6 +70,10 @@ class PointsMaterial extends Material {
 		 * @default null
 		 */
 		this.map = null;
+		this.mapSaturation = 1.0;
+		this.mapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.mipMapBias = 0;
 
 		/**
 		 * The alpha map is a grayscale texture that controls the opacity across the
@@ -122,6 +127,10 @@ class PointsMaterial extends Material {
 		this.color.copy( source.color );
 
 		this.map = source.map;
+		this.mapSaturation = source.mapSaturation;
+		this.mapLevel.copy(source.mapLevel);
+		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.mipMapBias = source.mipMapBias;
 
 		this.alphaMap = source.alphaMap;
 

@@ -444,7 +444,9 @@ class Texture extends EventDispatcher {
 
 		this.userData = JSON.parse( JSON.stringify( source.userData ) );
 
-		this.needsUpdate = true;
+		if (this.image !== null) {
+			this.needsUpdate = true;
+		}
 
 		return this;
 

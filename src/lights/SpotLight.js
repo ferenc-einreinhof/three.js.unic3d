@@ -66,7 +66,7 @@ class SpotLight extends Light {
 		 *
 		 * @type {Object3D}
 		 */
-		this.target = new Object3D();
+		// this.target = new Object3D();
 
 		/**
 		 * Maximum range of the light. `0` means no limit.
@@ -160,7 +160,7 @@ class SpotLight extends Light {
 		this.penumbra = source.penumbra;
 		this.decay = source.decay;
 
-		this.target = source.target.clone();
+		// this.target = source.target.clone();
 
 		this.shadow = source.shadow.clone();
 

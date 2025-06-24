@@ -3,6 +3,7 @@ import { Material } from './Material.js';
 import { Vector2 } from '../math/Vector2.js';
 import { Color } from '../math/Color.js';
 import { Euler } from '../math/Euler.js';
+import { Vector3 } from '../math/Vector3.js';
 
 /**
  * A standard physically based material, using Metallic-Roughness workflow.
@@ -83,6 +84,8 @@ class MeshStandardMaterial extends Material {
 		 */
 		this.roughness = 1.0;
 
+		this.fresnel = 1.0;
+
 		/**
 		 * How much the material is like a metal. Non-metallic materials such as wood
 		 * or stone use `0.0`, metallic use `1.0`, with nothing (usually) in between.
@@ -103,6 +106,17 @@ class MeshStandardMaterial extends Material {
 		 * @default null
 		 */
 		this.map = null;
+		this.mapSaturation = 1.0;
+		this.mapLevel = new Vector2(0.0, 1.0);
+		this.aoMapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.roughnessMapLevel = new Vector2(0.0, 1.0);
+		this.metalnessMapLevel = new Vector2(0.0, 1.0);
+		this.roughnessOffset = new Vector2( 0.0, 0.0 );
+		this.roughnessColorFactor = new Vector3( 0.0, 0.0, 0.0 );
+		this.mipMapBias = 0;
+		this.detailNormalScale = 1;
+		this.detailNormalAO = 0;
 
 		/**
 		 * The light map. Requires a second set of UVs.
@@ -265,6 +279,8 @@ class MeshStandardMaterial extends Material {
 		 */
 		this.metalnessMap = null;
 
+		this.detailNormalMap = null;
+
 		/**
 		 * The alpha map is a grayscale texture that controls the opacity across the
 		 * surface (black: fully transparent; white: fully opaque).
@@ -304,6 +320,8 @@ class MeshStandardMaterial extends Material {
 		 * @default 1
 		 */
 		this.envMapIntensity = 1.0;
+
+		this.envMapDiffuseMultiplier = 1.0;
 
 		/**
 		 * Renders the geometry as a wireframe.
@@ -359,6 +377,8 @@ class MeshStandardMaterial extends Material {
 		 */
 		this.fog = true;
 
+		this.contourFade = 0;
+
 		this.setValues( parameters );
 
 	}
@@ -371,9 +391,21 @@ class MeshStandardMaterial extends Material {
 
 		this.color.copy( source.color );
 		this.roughness = source.roughness;
+		this.fresnel = source.fresnel;
 		this.metalness = source.metalness;
 
 		this.map = source.map;
+		this.mapSaturation = source.mapSaturation;
+		this.mapLevel.copy(source.mapLevel);
+		this.aoMapLevel.copy(source.aoMapLevel);
+		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.roughnessMapLevel.copy(source.roughnessMapLevel);
+		this.metalnessMapLevel.copy(source.metalnessMapLevel);
+		this.roughnessOffset.copy(source.roughnessOffset);
+		this.roughnessColorFactor.copy(source.roughnessColorFactor);
+		this.mipMapBias = source.mipMapBias;
+		this.detailNormalScale = source.detailNormalScale;
+		this.detailNormalAO = source.detailNormalAO;
 
 		this.lightMap = source.lightMap;
 		this.lightMapIntensity = source.lightMapIntensity;
@@ -400,11 +432,14 @@ class MeshStandardMaterial extends Material {
 
 		this.metalnessMap = source.metalnessMap;
 
+		this.detailNormalMap = source.detailNormalMap;
+
 		this.alphaMap = source.alphaMap;
 
 		this.envMap = source.envMap;
 		this.envMapRotation.copy( source.envMapRotation );
 		this.envMapIntensity = source.envMapIntensity;
+		this.envMapDiffuseMultiplier = source.envMapDiffuseMultiplier;
 
 		this.wireframe = source.wireframe;
 		this.wireframeLinewidth = source.wireframeLinewidth;
@@ -414,6 +449,8 @@ class MeshStandardMaterial extends Material {
 		this.flatShading = source.flatShading;
 
 		this.fog = source.fog;
+
+		this.contourFade = source.contourFade;
 
 		return this;
 

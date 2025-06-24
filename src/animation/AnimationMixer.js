@@ -83,22 +83,22 @@ class AnimationMixer extends EventDispatcher {
 
 			} else {
 
-				binding = bindings[ i ];
+				// binding = bindings[ i ];
 
-				if ( binding !== undefined ) {
+				// if ( binding !== undefined ) {
 
-					// existing binding, make sure the cache knows
+				// 	// existing binding, make sure the cache knows
 
-					if ( binding._cacheIndex === null ) {
+				// 	if ( binding._cacheIndex === null ) {
 
-						++ binding.referenceCount;
-						this._addInactiveBinding( binding, rootUuid, trackName );
+				// 		++ binding.referenceCount;
+				// 		this._addInactiveBinding( binding, rootUuid, trackName );
 
-					}
+				// 	}
 
-					continue;
+				// 	continue;
 
-				}
+				// }
 
 				const path = prototypeAction && prototypeAction.
 					_propertyBindings[ i ].binding.parsedPath;
@@ -130,7 +130,7 @@ class AnimationMixer extends EventDispatcher {
 				// appears to be still using it -> rebind
 
 				const rootUuid = ( action._localRoot || this._root ).uuid,
-					clipUuid = action._clip.uuid,
+					clipUuid = action._clipUuid,
 					actionsForClip = this._actionsByClip[ clipUuid ];
 
 				this._bindAction( action,
@@ -315,7 +315,7 @@ class AnimationMixer extends EventDispatcher {
 		action._cacheIndex = null;
 
 
-		const clipUuid = action._clip.uuid,
+		const clipUuid = action._clipUuid,
 			actionsByClip = this._actionsByClip,
 			actionsForClip = actionsByClip[ clipUuid ],
 			knownActionsForClip = actionsForClip.knownActions,
@@ -548,14 +548,14 @@ class AnimationMixer extends EventDispatcher {
 	 * @param {(NormalAnimationBlendMode|AdditiveAnimationBlendMode)} [blendMode] - The blend mode.
 	 * @return {?AnimationAction} The animation action.
 	 */
-	clipAction( clip, optionalRoot, blendMode ) {
+	clipAction( clip, optionalRoot, blendMode, offset, duration, actionId ) {
 
 		const root = optionalRoot || this._root,
 			rootUuid = root.uuid;
 
 		let clipObject = typeof clip === 'string' ? AnimationClip.findByName( root, clip ) : clip;
 
-		const clipUuid = clipObject !== null ? clipObject.uuid : clip;
+		const clipUuid = (clipObject !== null ? clipObject.uuid : clip) + (actionId?':'+actionId:'');
 
 		const actionsForClip = this._actionsByClip[ clipUuid ];
 		let prototypeAction = null;
@@ -598,7 +598,8 @@ class AnimationMixer extends EventDispatcher {
 		if ( clipObject === null ) return null;
 
 		// allocate all resources required to run it
-		const newAction = new AnimationAction( this, clipObject, optionalRoot, blendMode );
+		const newAction = new AnimationAction( this, clipObject, optionalRoot, blendMode, offset, duration );
+		newAction._clipUuid = clipUuid;
 
 		this._bindAction( newAction, prototypeAction );
 
@@ -616,27 +617,27 @@ class AnimationMixer extends EventDispatcher {
 	 * @param {Object3D} [optionalRoot] - An alternative root object.
 	 * @return {?AnimationAction} The animation action. Returns `null` if no action was found.
 	 */
-	existingAction( clip, optionalRoot ) {
+	// existingAction( clip, optionalRoot ) {
 
-		const root = optionalRoot || this._root,
-			rootUuid = root.uuid,
+	// 	const root = optionalRoot || this._root,
+	// 		rootUuid = root.uuid,
 
-			clipObject = typeof clip === 'string' ?
-				AnimationClip.findByName( root, clip ) : clip,
+	// 		clipObject = typeof clip === 'string' ?
+	// 			AnimationClip.findByName( root, clip ) : clip,
 
-			clipUuid = clipObject ? clipObject.uuid : clip,
+	// 		clipUuid = clipObject ? clipObject.uuid : clip,
 
-			actionsForClip = this._actionsByClip[ clipUuid ];
+	// 		actionsForClip = this._actionsByClip[ clipUuid ];
 
-		if ( actionsForClip !== undefined ) {
+	// 	if ( actionsForClip !== undefined ) {
 
-			return actionsForClip.actionByRoot[ rootUuid ] || null;
+	// 		return actionsForClip.actionByRoot[ rootUuid ] || null;
 
-		}
+	// 	}
 
-		return null;
+	// 	return null;
 
-	}
+	// }
 
 	/**
 	 * Deactivates all previously scheduled actions on this mixer.
@@ -743,46 +744,46 @@ class AnimationMixer extends EventDispatcher {
 	 *
 	 * @param {AnimationClip} clip - The clip to uncache.
 	 */
-	uncacheClip( clip ) {
+	// uncacheClip( clip ) {
 
-		const actions = this._actions,
-			clipUuid = clip.uuid,
-			actionsByClip = this._actionsByClip,
-			actionsForClip = actionsByClip[ clipUuid ];
+	// 	const actions = this._actions,
+	// 		clipUuid = clip.uuid,
+	// 		actionsByClip = this._actionsByClip,
+	// 		actionsForClip = actionsByClip[ clipUuid ];
 
-		if ( actionsForClip !== undefined ) {
+	// 	if ( actionsForClip !== undefined ) {
 
-			// note: just calling _removeInactiveAction would mess up the
-			// iteration state and also require updating the state we can
-			// just throw away
+	// 		// note: just calling _removeInactiveAction would mess up the
+	// 		// iteration state and also require updating the state we can
+	// 		// just throw away
 
-			const actionsToRemove = actionsForClip.knownActions;
+	// 		const actionsToRemove = actionsForClip.knownActions;
 
-			for ( let i = 0, n = actionsToRemove.length; i !== n; ++ i ) {
+	// 		for ( let i = 0, n = actionsToRemove.length; i !== n; ++ i ) {
 
-				const action = actionsToRemove[ i ];
+	// 			const action = actionsToRemove[ i ];
 
-				this._deactivateAction( action );
+	// 			this._deactivateAction( action );
 
-				const cacheIndex = action._cacheIndex,
-					lastInactiveAction = actions[ actions.length - 1 ];
+	// 			const cacheIndex = action._cacheIndex,
+	// 				lastInactiveAction = actions[ actions.length - 1 ];
 
-				action._cacheIndex = null;
-				action._byClipCacheIndex = null;
+	// 			action._cacheIndex = null;
+	// 			action._byClipCacheIndex = null;
 
-				lastInactiveAction._cacheIndex = cacheIndex;
-				actions[ cacheIndex ] = lastInactiveAction;
-				actions.pop();
+	// 			lastInactiveAction._cacheIndex = cacheIndex;
+	// 			actions[ cacheIndex ] = lastInactiveAction;
+	// 			actions.pop();
 
-				this._removeInactiveBindingsForAction( action );
+	// 			this._removeInactiveBindingsForAction( action );
 
-			}
+	// 		}
 
-			delete actionsByClip[ clipUuid ];
+	// 		delete actionsByClip[ clipUuid ];
 
-		}
+	// 	}
 
-	}
+	// }
 
 	/**
 	 * Deallocates all memory resources for a root object. Before using this
@@ -836,18 +837,18 @@ class AnimationMixer extends EventDispatcher {
 	 * @param {AnimationClip|string} clip - An animation clip or alternatively the name of the animation clip.
 	 * @param {Object3D} [optionalRoot] - An alternative root object.
 	 */
-	uncacheAction( clip, optionalRoot ) {
+	// uncacheAction( clip, optionalRoot ) {
 
-		const action = this.existingAction( clip, optionalRoot );
+	// 	const action = this.existingAction( clip, optionalRoot );
 
-		if ( action !== null ) {
+	// 	if ( action !== null ) {
 
-			this._deactivateAction( action );
-			this._removeInactiveAction( action );
+	// 		this._deactivateAction( action );
+	// 		this._removeInactiveAction( action );
 
-		}
+	// 	}
 
-	}
+	// }
 
 }
 

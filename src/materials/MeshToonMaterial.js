@@ -53,6 +53,11 @@ class MeshToonMaterial extends Material {
 		 * @default null
 		 */
 		this.map = null;
+		this.mapSaturation = 1.0;
+		this.mapLevel = new Vector2(0.0, 1.0);
+		this.aoMapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.mipMapBias = 0;
 
 		/**
 		 * Gradient map for toon shading. It's required to set
@@ -279,6 +284,12 @@ class MeshToonMaterial extends Material {
 		this.color.copy( source.color );
 
 		this.map = source.map;
+		this.mapSaturation = source.mapSaturation;
+		this.mapLevel.copy(source.mapLevel);
+		this.aoMapLevel.copy(source.aoMapLevel);
+		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.mipMapBias = source.mipMapBias;
+
 		this.gradientMap = source.gradientMap;
 
 		this.lightMap = source.lightMap;

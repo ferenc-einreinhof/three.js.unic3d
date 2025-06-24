@@ -1,5 +1,7 @@
 import { Object3D } from '../core/Object3D.js';
 import { Euler } from '../math/Euler.js';
+import { Color } from '../math/Color.js';
+import { Fog } from './Fog.js';
 
 /**
  * Scenes allow you to set up what is to be rendered and where by three.js.
@@ -56,7 +58,7 @@ class Scene extends Object3D {
 		 * @type {?(Fog|FogExp2)}
 		 * @default null
 		 */
-		this.fog = null;
+		// this.fog = null;
 
 		/**
 		 * Sets the blurriness of the background. Only influences environment maps
@@ -112,12 +114,48 @@ class Scene extends Object3D {
 		 */
 		this.overrideMaterial = null;
 
+		this.environmentIntensity = 1;
+		this.environmentDiffuseMultiplier = 1;
+		// this.environmentRotationOffset = 0;
+		this.aoMapIntensity = 1;
+
+		if (!('fog' in this)) this.fog = null;
+
 		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
 			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) );
 
 		}
 
+	}
+
+	get fogDistanceMin() { return this._fog_near ?? 1; }
+	set fogDistanceMin(v) { this.setFogParam('near', v); }
+	get fogDistanceMax() { return this._fog_far ?? 1000; }
+	set fogDistanceMax(v) { this.setFogParam('far', v); }
+	get fogColor() {
+		return this._fog_color ?? 0;
+	}
+	set fogColor(v) {
+		if (v instanceof Color) v = v.getHex();
+		this._fog_color = v;
+		if (this.fog) this.fog.color.setHex(v);
+	}
+	get fogType() { return this._fogType ?? 'none'; }
+	set fogType(v) {
+		this._fogType = v;
+		if (!v || v === 'none') {
+			this.fog = null;
+		} else {
+			this.fog = new Fog(this._fogColor ?? 0, this._fogDistanceMin ?? 1, this._fogDistanceMax ?? 1000);
+		}
+	}
+
+	setFogParam(prop, val) {
+		this['_fog_'+prop] = val;
+		if (this.fog) {
+			this.fog[prop] = val;
+		}
 	}
 
 	copy( source, recursive ) {
@@ -139,6 +177,15 @@ class Scene extends Object3D {
 
 		this.matrixAutoUpdate = source.matrixAutoUpdate;
 
+		this.environmentIntensity = source.environmentIntensity;
+		this.environmentDiffuseMultiplier = source.environmentDiffuseMultiplier;
+		// this.environmentRotationOffset = source.environmentRotationOffset;
+		this.aoMapIntensity = source.aoMapIntensity;
+		this.fogType = source.fogType;
+		this.fogColor = source.fogColor;
+		this.fogDistanceMin = source.fogDistanceMin;
+		this.fogDistanceMax = source.fogDistanceMax;      
+
 		return this;
 
 	}
@@ -155,6 +202,15 @@ class Scene extends Object3D {
 
 		if ( this.environmentIntensity !== 1 ) data.object.environmentIntensity = this.environmentIntensity;
 		data.object.environmentRotation = this.environmentRotation.toArray();
+
+		data.object.environmentIntensity = this.environmentIntensity;
+		data.object.environmentDiffuseMultiplier = this.environmentDiffuseMultiplier;
+		// data.object.environmentRotationOffset = this.environmentRotationOffset;
+		data.object.aoMapIntensity = this.aoMapIntensity;
+		data.object.fogType = this.fogType;
+		data.object.fogColor = this.fogColor;
+		data.object.fogDistanceMin = this.fogDistanceMin;
+		data.object.fogDistanceMax = this.fogDistanceMax;   
 
 		return data;
 

@@ -630,7 +630,21 @@ class Material extends EventDispatcher {
 		if ( this.color && this.color.isColor ) data.color = this.color.getHex();
 
 		if ( this.roughness !== undefined ) data.roughness = this.roughness;
+		if ( this.fresnel !== undefined ) data.fresnel = this.fresnel;
+		if ( this.mapSaturation !== undefined ) data.mapSaturation = this.mapSaturation;
+		if ( this.mapLevel !== undefined ) data.mapLevel = this.mapLevel.toArray();
+		if ( this.aoMapLevel !== undefined ) data.aoMapLevel = this.aoMapLevel.toArray();
+		if ( this.alphaMapLevel !== undefined ) data.alphaMapLevel = this.alphaMapLevel.toArray();
+		if ( this.roughnessMapLevel !== undefined ) data.roughnessMapLevel = this.roughnessMapLevel.toArray();
+		if ( this.metalnessMapLevel !== undefined ) data.metalnessMapLevel = this.metalnessMapLevel.toArray();
+		if ( this.roughnessOffset !== undefined ) data.roughnessOffset = this.roughnessOffset.toArray();
+		if ( this.roughnessColorFactor !== undefined ) data.roughnessColorFactor = this.roughnessColorFactor.toArray();
+		if ( this.detailNormalScale !== undefined ) data.detailNormalScale = this.detailNormalScale;
+		if ( this.detailNormalAO !== undefined ) data.detailNormalAO = this.detailNormalAO;
+
 		if ( this.metalness !== undefined ) data.metalness = this.metalness;
+
+		if ( this.mipMapBias !== 0 ) data.mipMapBias = this.mipMapBias;
 
 		if ( this.sheen !== undefined ) data.sheen = this.sheen;
 		if ( this.sheenColor && this.sheenColor.isColor ) data.sheenColor = this.sheenColor.getHex();
@@ -734,6 +748,7 @@ class Material extends EventDispatcher {
 
 		if ( this.roughnessMap && this.roughnessMap.isTexture ) data.roughnessMap = this.roughnessMap.toJSON( meta ).uuid;
 		if ( this.metalnessMap && this.metalnessMap.isTexture ) data.metalnessMap = this.metalnessMap.toJSON( meta ).uuid;
+		if ( this.detailNormalMap && this.detailNormalMap.isTexture ) { data.detailNormalMap = this.detailNormalMap.toJSON( meta ).uuid; }
 
 		if ( this.emissiveMap && this.emissiveMap.isTexture ) data.emissiveMap = this.emissiveMap.toJSON( meta ).uuid;
 		if ( this.specularMap && this.specularMap.isTexture ) data.specularMap = this.specularMap.toJSON( meta ).uuid;
@@ -748,6 +763,9 @@ class Material extends EventDispatcher {
 
 		}
 
+		if ( this.envMapDiffuseMultiplier !== undefined ) data.envMapDiffuseMultiplier = this.envMapDiffuseMultiplier;
+
+		if ( this.contourFade !== undefined ) data.contourFade = this.contourFade; 
 		if ( this.envMapRotation !== undefined ) data.envMapRotation = this.envMapRotation.toArray();
 		if ( this.envMapIntensity !== undefined ) data.envMapIntensity = this.envMapIntensity;
 		if ( this.reflectivity !== undefined ) data.reflectivity = this.reflectivity;
@@ -774,8 +792,8 @@ class Material extends EventDispatcher {
 		if ( this.side !== FrontSide ) data.side = this.side;
 		if ( this.vertexColors === true ) data.vertexColors = true;
 
-		if ( this.opacity < 1 ) data.opacity = this.opacity;
-		if ( this.transparent === true ) data.transparent = true;
+		if ( this.opacity !== 1 ) data.opacity = this.opacity;
+		if ( this.transparent ) data.transparent = this.transparent;    
 
 		if ( this.blendSrc !== SrcAlphaFactor ) data.blendSrc = this.blendSrc;
 		if ( this.blendDst !== OneMinusSrcAlphaFactor ) data.blendDst = this.blendDst;
@@ -997,6 +1015,22 @@ class Material extends EventDispatcher {
 
 	}
 
+	loadSimple(json, prop) { if (json[prop] !== undefined ) this[prop] = json[prop]; }
+	loadColor(json, prop) { if (json[prop] !== undefined ) this[prop]?.setHex(json[prop]); }
+	loadVec(json, prop) { if (json[prop] !== undefined ) this[prop]?.fromArray(json[prop]); }
+	loadText(json, prop, getter) { if (json[prop] !== undefined ) this[prop] = getter(json[prop]); }
+	storeSimple(data, prop) { if (this[prop] !== undefined ) data[prop] = this[prop]; }
+	storeColor(data, prop) { if (this[prop] !== undefined ) data[prop] = this[prop].getHex(); }
+	storeVec(data, prop) { if (this[prop] !== undefined ) data[prop] = this[prop].toArray(); }
+	storeText(data, prop, meta) { if (this[prop]?.isTexture  ) data[prop] = this[prop].toJSON( meta ).uuid }
+	loadSimples(json, props) { for (const prop of props) this.loadSimple(json, prop); }
+	loadColors(json, props) { for (const prop of props) this.loadColor(json, prop); }
+	loadVectors(json, props) { for (const prop of props) this.loadVec(json, prop); }
+	loadTextures(json, props, getter) { for (const prop of props) this.loadText(json, prop, getter); }
+	storeSimples(data, props) { for (const prop of props) this.storeSimple(data, prop); }
+	storeColors(data, props) { for (const prop of props) this.storeColor(data, prop); }
+	storeVectors(data, props) { for (const prop of props) this.storeVec(data, prop); }
+	storeTextures(data, props, meta) { for (const prop of props) this.storeText(data, prop, meta); }
 }
 
 export { Material };

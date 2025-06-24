@@ -129,6 +129,21 @@ class MaterialLoader extends Loader {
 		if ( json.name !== undefined ) material.name = json.name;
 		if ( json.color !== undefined && material.color !== undefined ) material.color.setHex( json.color );
 		if ( json.roughness !== undefined ) material.roughness = json.roughness;
+		if ( json.fresnel !== undefined ) material.fresnel = json.fresnel;
+		if ( json.mapSaturation !== undefined ) material.mapSaturation = json.mapSaturation;
+		if ( json.mapLevel0 !== undefined ) material.mapLevel = new Vector2(json.mapLevel0, 1);							// Backward compatibility
+		if ( json.mapLevel1 !== undefined ) material.mapLevel?.setY(json.mapLevel1 - (json.mapLevel0 ?? 0));				// Backward compatibility
+		if ( json.mapLevel !== undefined ) material.mapLevel = new Vector2().fromArray(json.mapLevel);
+		if ( json.aoMapLevel !== undefined ) material.aoMapLevel = new Vector2().fromArray(json.aoMapLevel);
+		if ( json.alphaMapLevel !== undefined ) material.alphaMapLevel = new Vector2().fromArray(json.alphaMapLevel);
+		if ( json.roughnessMapLevel !== undefined ) material.roughnessMapLevel = new Vector2().fromArray(json.roughnessMapLevel);
+		if ( json.metalnessMapLevel !== undefined ) material.metalnessMapLevel = new Vector2().fromArray(json.metalnessMapLevel);
+		if ( json.detailNormalScale !== undefined ) material.detailNormalScale = json.detailNormalScale;
+		if ( json.detailNormalAO !== undefined ) material.detailNormalAO = json.detailNormalAO;
+
+		if ( json.roughnessOffset !== undefined ) material.roughnessOffset = new Vector2().fromArray(json.roughnessOffset);
+		if ( json.roughnessColorFactor !== undefined ) material.roughnessColorFactor = new Vector3().fromArray(json.roughnessColorFactor);
+
 		if ( json.metalness !== undefined ) material.metalness = json.metalness;
 		if ( json.sheen !== undefined ) material.sheen = json.sheen;
 		if ( json.sheenColor !== undefined ) material.sheenColor = new Color().setHex( json.sheenColor );
@@ -187,6 +202,7 @@ class MaterialLoader extends Loader {
 		if ( json.wireframeLinejoin !== undefined ) material.wireframeLinejoin = json.wireframeLinejoin;
 
 		if ( json.rotation !== undefined ) material.rotation = json.rotation;
+		if ( json.mipMapBias !== undefined ) material.mipMapBias = json.mipMapBias;
 
 		if ( json.linewidth !== undefined ) material.linewidth = json.linewidth;
 		if ( json.dashSize !== undefined ) material.dashSize = json.dashSize;
@@ -202,6 +218,8 @@ class MaterialLoader extends Loader {
 		if ( json.alphaToCoverage !== undefined ) material.alphaToCoverage = json.alphaToCoverage;
 		if ( json.premultipliedAlpha !== undefined ) material.premultipliedAlpha = json.premultipliedAlpha;
 		if ( json.forceSinglePass !== undefined ) material.forceSinglePass = json.forceSinglePass;
+
+		if ( json.alphaToCoverage !== undefined ) material.alphaToCoverage = json.alphaToCoverage;
 
 		if ( json.visible !== undefined ) material.visible = json.visible;
 
@@ -330,6 +348,8 @@ class MaterialLoader extends Loader {
 		if ( json.roughnessMap !== undefined ) material.roughnessMap = getTexture( json.roughnessMap );
 		if ( json.metalnessMap !== undefined ) material.metalnessMap = getTexture( json.metalnessMap );
 
+		if ( json.detailNormalMap !== undefined ) material.detailNormalMap = getTexture( json.detailNormalMap );
+
 		if ( json.emissiveMap !== undefined ) material.emissiveMap = getTexture( json.emissiveMap );
 		if ( json.emissiveIntensity !== undefined ) material.emissiveIntensity = json.emissiveIntensity;
 
@@ -340,6 +360,7 @@ class MaterialLoader extends Loader {
 		if ( json.envMap !== undefined ) material.envMap = getTexture( json.envMap );
 		if ( json.envMapRotation !== undefined ) material.envMapRotation.fromArray( json.envMapRotation );
 		if ( json.envMapIntensity !== undefined ) material.envMapIntensity = json.envMapIntensity;
+		if ( json.envMapDiffuseMultiplier !== undefined ) material.envMapDiffuseMultiplier = json.envMapDiffuseMultiplier;
 
 		if ( json.reflectivity !== undefined ) material.reflectivity = json.reflectivity;
 		if ( json.refractionRatio !== undefined ) material.refractionRatio = json.refractionRatio;
@@ -362,6 +383,8 @@ class MaterialLoader extends Loader {
 
 		if ( json.transmissionMap !== undefined ) material.transmissionMap = getTexture( json.transmissionMap );
 		if ( json.thicknessMap !== undefined ) material.thicknessMap = getTexture( json.thicknessMap );
+
+		if ( json.contourFade !== undefined ) material.contourFade = json.contourFade === true ? 1 : json.contourFade || 0;
 
 		if ( json.anisotropyMap !== undefined ) material.anisotropyMap = getTexture( json.anisotropyMap );
 

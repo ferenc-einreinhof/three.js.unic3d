@@ -15,13 +15,16 @@ export default /* glsl */`
 
 #ifdef USE_MAP
 
-	diffuseColor *= texture2D( map, uv );
+	vec4 mapTexel = texture2D( map, uv ); 
+	mapTexel.rgb = (mix(vec3(dot(mapTexel.rgb, vec3(0.2125, 0.7154, 0.0721))), mapTexel.rgb, mapSaturation) - vec3(mapLevel.x)) / vec3(mapLevel.y);
+
+	diffuseColor *= mapTexel;
 
 #endif
 
 #ifdef USE_ALPHAMAP
 
-	diffuseColor.a *= texture2D( alphaMap, uv ).g;
+	diffuseColor.a *= (texture2D( alphaMap, uv ).g - alphaMapLevel.x) / alphaMapLevel.y;
 
 #endif
 `;

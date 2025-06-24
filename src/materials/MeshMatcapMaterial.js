@@ -67,6 +67,10 @@ class MeshMatcapMaterial extends Material {
 		 * @default null
 		 */
 		this.map = null;
+		this.mapSaturation = 1.0;
+		this.mapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.mipMapBias = 0;
 
 		/**
 		 * The texture to create a bump map. The black and white values map to the
@@ -196,6 +200,10 @@ class MeshMatcapMaterial extends Material {
 		this.matcap = source.matcap;
 
 		this.map = source.map;
+		this.mapSaturation = source.mapSaturation;
+		this.mapLevel.copy(source.mapLevel);
+		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.mipMapBias = source.mipMapBias;
 
 		this.bumpMap = source.bumpMap;
 		this.bumpScale = source.bumpScale;

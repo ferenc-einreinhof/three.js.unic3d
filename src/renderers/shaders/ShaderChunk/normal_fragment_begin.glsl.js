@@ -19,7 +19,7 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 
 #endif
 
-#if defined( USE_NORMALMAP_TANGENTSPACE ) || defined( USE_CLEARCOAT_NORMALMAP ) || defined( USE_ANISOTROPY )
+#if defined( USE_NORMALMAP_TANGENTSPACE ) || defined( USE_CLEARCOAT_NORMALMAP ) || defined( USE_ANISOTROPY ) || defined( USE_DETAIL_NORMALMAP )
 
 	#ifdef USE_TANGENT
 
@@ -32,6 +32,8 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 			vNormalMapUv
 		#elif defined( USE_CLEARCOAT_NORMALMAP )
 			vClearcoatNormalMapUv
+		#elif defined( USE_DETAIL_NORMALMAP )
+			vDetailNormalMapUv
 		#else
 			vUv
 		#endif

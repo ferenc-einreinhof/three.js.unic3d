@@ -67,7 +67,7 @@ class DirectionalLight extends Light {
 		 *
 		 * @type {Object3D}
 		 */
-		this.target = new Object3D();
+		// this.target = new Object3D();
 
 		/**
 		 * This property holds the light's shadow configuration.
@@ -88,7 +88,7 @@ class DirectionalLight extends Light {
 
 		super.copy( source );
 
-		this.target = source.target.clone();
+		// this.target = source.target.clone();
 		this.shadow = source.shadow.clone();
 
 		return this;

@@ -384,7 +384,7 @@ vec2 DFGApprox( const in vec3 normal, const in vec3 viewDir, const in float roug
 
 	vec4 r = roughness * c0 + c1;
 
-	float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;
+	float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) * fresnel ) * r.x + r.y;
 
 	vec2 fab = vec2( - 1.04, 1.04 ) * a004 + r.zw;
 

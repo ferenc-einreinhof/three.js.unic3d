@@ -1,6 +1,7 @@
 import { Color } from '../../math/Color.js';
 import { Vector2 } from '../../math/Vector2.js';
 import { Matrix3 } from '../../math/Matrix3.js';
+import { Vector3 } from '../../math/Vector3.js';
 
 // Uniforms library for shared webgl shaders
 const UniformsLib = {
@@ -11,9 +12,13 @@ const UniformsLib = {
 		opacity: { value: 1.0 },
 
 		map: { value: null },
+		mapSaturation: { value: 1.0 },
+		mapLevel: { value: new Vector2(0.0, 1.0) },
 		mapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		mipMapBias: { value: 0.0 },
 
 		alphaMap: { value: null },
+		alphaMapLevel: { value: new Vector2(0.0, 1.0) },
 		alphaMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 
 		alphaTest: { value: 0 }
@@ -42,7 +47,9 @@ const UniformsLib = {
 
 		aoMap: { value: null },
 		aoMapIntensity: { value: 1 },
-		aoMapTransform: { value: /*@__PURE__*/ new Matrix3() }
+		aoMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		aoMapLevel: { value: new Vector2(0.0, 1.0) },
+		aoMapFade: { value: 0.0 },
 
 	},
 
@@ -89,14 +96,27 @@ const UniformsLib = {
 	metalnessmap: {
 
 		metalnessMap: { value: null },
-		metalnessMapTransform: { value: /*@__PURE__*/ new Matrix3() }
+		metalnessMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		metalnessMapLevel: { value: new Vector2(0.0, 1.0) },
+
+	},
+
+	detailnormalmap: {
+
+		detailNormalMap: { value: null },
+		detailNormalMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		detailNormalScale: { value: 1.0 },
+		detailNormalAO: { value: 1.0 },
 
 	},
 
 	roughnessmap: {
 
 		roughnessMap: { value: null },
-		roughnessMapTransform: { value: /*@__PURE__*/ new Matrix3() }
+		roughnessMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		roughnessMapLevel: { value: new Vector2(0.0, 1.0) },
+		roughnessColorFactor: { value: new Vector3(0.0, 0.0, 0.0) },
+		roughnessOffset: { value: new Vector2(0.0, 0.0) },
 
 	},
 
@@ -205,10 +225,14 @@ const UniformsLib = {
 		size: { value: 1.0 },
 		scale: { value: 1.0 },
 		map: { value: null },
+		mapSaturation: { value: 1.0 },
+		mapLevel: { value: new Vector2(0.0, 1.0) },
+		alphaMapLevel: { value: new Vector2(0.0, 1.0) },
 		alphaMap: { value: null },
 		alphaMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 		alphaTest: { value: 0 },
-		uvTransform: { value: /*@__PURE__*/ new Matrix3() }
+		uvTransform: { value: /*@__PURE__*/ new Matrix3() },
+		mipMapBias: { value: 0.0 },
 
 	},
 
@@ -219,7 +243,11 @@ const UniformsLib = {
 		center: { value: /*@__PURE__*/ new Vector2( 0.5, 0.5 ) },
 		rotation: { value: 0.0 },
 		map: { value: null },
+		mapSaturation: { value: 1.0 },
+		mapLevel: { value: new Vector2(0.0, 1.0) },
+		alphaMapLevel: { value: new Vector2(0.0, 1.0) },
 		mapTransform: { value: /*@__PURE__*/ new Matrix3() },
+		mipMapBias: { value: 0.0 },
 		alphaMap: { value: null },
 		alphaMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 		alphaTest: { value: 0 }

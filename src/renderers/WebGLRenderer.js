@@ -336,7 +336,11 @@ class WebGLRenderer {
 
 		function getContext( contextName, contextAttributes ) {
 
-			return canvas.getContext( contextName, contextAttributes );
+			if ( window.threeJsContextCreator ) {
+				return window.threeJsContextCreator( canvas, contextName, contextAttributes );
+			} else {
+				return canvas.getContext( contextName, contextAttributes );
+			}
 
 		}
 
@@ -1093,13 +1097,13 @@ class WebGLRenderer {
 
 		// Buffer rendering
 
-		this.renderBufferDirect = function ( camera, scene, geometry, material, object, group ) {
+		this.renderBufferDirect = function ( camera, scene, geometry, material, object, group, forceRefreshMaterial ) {
 
 			if ( scene === null ) scene = _emptyScene; // renderBufferDirect second parameter used to be fog (could be null)
 
 			const frontFaceCW = ( object.isMesh && object.matrixWorld.determinant() < 0 );
 
-			const program = setProgram( camera, scene, geometry, material, object );
+			const program = setProgram( camera, scene, geometry, material, object, forceRefreshMaterial );
 
 			state.setMaterial( material, frontFaceCW );
 
@@ -1809,6 +1813,8 @@ class WebGLRenderer {
 
 				}
 
+			} else if (object.layers.recursive) {
+				return;
 			}
 
 			const children = object.children;
@@ -2176,7 +2182,7 @@ class WebGLRenderer {
 
 		}
 
-		function setProgram( camera, scene, geometry, material, object ) {
+		function setProgram( camera, scene, geometry, material, object, forceRefreshMaterial = false ) {
 
 			if ( scene.isScene !== true ) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
 
@@ -2351,7 +2357,7 @@ class WebGLRenderer {
 			}
 
 			let refreshProgram = false;
-			let refreshMaterial = false;
+			let refreshMaterial = forceRefreshMaterial;
 			let refreshLights = false;
 
 			const p_uniforms = program.getUniforms(),
@@ -2535,7 +2541,7 @@ class WebGLRenderer {
 
 				}
 
-				materials.refreshMaterialUniforms( m_uniforms, material, _pixelRatio, _height, currentRenderState.state.transmissionRenderTarget[ camera.id ] );
+				materials.refreshMaterialUniforms( m_uniforms, material, scene, _pixelRatio, _height, currentRenderState.state.transmissionRenderTarget[ camera.id ] );
 
 				WebGLUniforms.upload( _gl, getUniformList( materialProperties ), m_uniforms, textures );
 

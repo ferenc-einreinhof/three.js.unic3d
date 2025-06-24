@@ -55,7 +55,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 		const envMap = ( material.isMeshStandardMaterial ? cubeuvmaps : cubemaps ).get( material.envMap || environment );
 		const envMapCubeUVHeight = ( !! envMap ) && ( envMap.mapping === CubeUVReflectionMapping ) ? envMap.image.height : null;
 
-		const shaderID = shaderIDs[ material.type ];
+		const shaderID = shaderIDs[ material.shaderType || material.type ];
 
 		// heuristics to create shader parameters according to lights in the scene
 		// (not to blow over maxLights budget)
@@ -125,6 +125,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 		const HAS_METALNESSMAP = !! material.metalnessMap;
 		const HAS_ROUGHNESSMAP = !! material.roughnessMap;
+		const HAS_DETAIL_NORMALMAP = !! material.detailNormalMap;
 
 		const HAS_ANISOTROPY = material.anisotropy > 0;
 		const HAS_CLEARCOAT = material.clearcoat > 0;
@@ -162,6 +163,11 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 		const HAS_EXTENSIONS = !! material.extensions;
 
+		const HAS_CONTOUR_FADE = !! material.contourFade;
+		const HAS_MIPMAP_BIAS = !! material.mipMapBias;
+		const HAS_ROUGHNESS_COLOR_FACTOR = !!material.roughnessColorFactor && material.roughnessColorFactor.lengthSq() > 0;
+		const HAS_ROUGHNESS_OFFSET = !!material.roughnessOffset && material.roughnessOffset.lengthSq() > 0;
+
 		let toneMapping = NoToneMapping;
 
 		if ( material.toneMapped ) {
@@ -177,7 +183,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 		const parameters = {
 
 			shaderID: shaderID,
-			shaderType: material.type,
+			shaderType: material.shaderType || material.type,
 			shaderName: material.name,
 
 			vertexShader: vertexShader,
@@ -219,6 +225,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 			metalnessMap: HAS_METALNESSMAP,
 			roughnessMap: HAS_ROUGHNESSMAP,
+			detailNormalMap: HAS_DETAIL_NORMALMAP,
 
 			anisotropy: HAS_ANISOTROPY,
 			anisotropyMap: HAS_ANISOTROPYMAP,
@@ -254,6 +261,11 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 			alphaTest: HAS_ALPHATEST,
 			alphaHash: HAS_ALPHAHASH,
 
+			contourFade: HAS_CONTOUR_FADE,
+			mipMapBias: HAS_MIPMAP_BIAS,
+			roughnessColorFactor: HAS_ROUGHNESS_COLOR_FACTOR,
+			roughnessOffset: HAS_ROUGHNESS_OFFSET,
+
 			combine: material.combine,
 
 			//
@@ -267,6 +279,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 			emissiveMapUv: HAS_EMISSIVEMAP && getChannel( material.emissiveMap.channel ),
 
 			metalnessMapUv: HAS_METALNESSMAP && getChannel( material.metalnessMap.channel ),
+			detailNormalMapUv: HAS_DETAIL_NORMALMAP && getChannel( material.detailNormalMap.channel ),
 			roughnessMapUv: HAS_ROUGHNESSMAP && getChannel( material.roughnessMap.channel ),
 
 			anisotropyMapUv: HAS_ANISOTROPYMAP && getChannel( material.anisotropyMap.channel ),
@@ -465,6 +478,11 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 		array.push( parameters.numClipIntersection );
 		array.push( parameters.depthPacking );
 
+		array.push( parameters.contourFade );
+		array.push( parameters.mipMapBias );
+		array.push( parameters.roughnessColorFactor );
+		array.push( parameters.roughnessOffset );
+		
 	}
 
 	function getProgramCacheKeyBooleans( array, parameters ) {
@@ -570,7 +588,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 	function getUniforms( material ) {
 
-		const shaderID = shaderIDs[ material.type ];
+		const shaderID = shaderIDs[ material.shaderType || material.type ];
 		let uniforms;
 
 		if ( shaderID ) {

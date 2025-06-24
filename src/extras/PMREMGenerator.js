@@ -459,6 +459,10 @@ class PMREMGenerator {
 
 		uniforms[ 'envMap' ].value = texture;
 
+		if (this._blurMaterial) {
+			this._blurMaterial.uniforms[ 'hdrClamp' ].value = texture.hdrClamp || 1000000;
+		}
+
 		const size = this._cubeSize;
 
 		_setViewport( cubeUVRenderTarget, 0, 0, 3 * size, 2 * size );
@@ -733,7 +737,8 @@ function _getBlurShader( lodMax, width, height ) {
 			'latitudinal': { value: false },
 			'dTheta': { value: 0 },
 			'mipInt': { value: 0 },
-			'poleAxis': { value: poleAxis }
+			'poleAxis': { value: poleAxis },
+			'hdrClamp': { value: 1000000 },
 		},
 
 		vertexShader: _getCommonVertexShader(),
@@ -751,6 +756,7 @@ function _getBlurShader( lodMax, width, height ) {
 			uniform bool latitudinal;
 			uniform float dTheta;
 			uniform float mipInt;
+			uniform float hdrClamp;
 			uniform vec3 poleAxis;
 
 			#define ENVMAP_TYPE_CUBE_UV
@@ -764,7 +770,7 @@ function _getBlurShader( lodMax, width, height ) {
 					+ cross( axis, vOutputDirection ) * sin( theta )
 					+ axis * dot( axis, vOutputDirection ) * ( 1.0 - cosTheta );
 
-				return bilinearCubeUV( envMap, sampleDirection, mipInt );
+				return min(bilinearCubeUV( envMap, sampleDirection, mipInt ), vec3( hdrClamp ));
 
 			}
 

@@ -9,7 +9,7 @@ export default /* glsl */`
 
 			vec4 envMapColor = textureCubeUV( envMap, envMapRotation * worldNormal, 1.0 );
 
-			return PI * envMapColor.rgb * envMapIntensity;
+			return PI * envMapColor.rgb * envMapIntensity * envMapDiffuseMultiplier;
 
 		#else
 
@@ -32,7 +32,8 @@ export default /* glsl */`
 
 			vec4 envMapColor = textureCubeUV( envMap, envMapRotation * reflectVec, roughness );
 
-			return envMapColor.rgb * envMapIntensity;
+			float rr = 1.0-roughness;
+			return envMapColor.rgb * envMapIntensity * mix(1.0, envMapDiffuseMultiplier, 1.0-rr*rr);;
 
 		#else
 

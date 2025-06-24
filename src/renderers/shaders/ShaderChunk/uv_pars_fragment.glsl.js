@@ -44,6 +44,11 @@ export default /* glsl */`
 	varying vec2 vMetalnessMapUv;
 
 #endif
+#ifdef USE_DETAIL_NORMALMAP
+
+	varying vec2 vDetailNormalMapUv;
+
+#endif
 #ifdef USE_ROUGHNESSMAP
 
 	varying vec2 vRoughnessMapUv;

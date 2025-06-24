@@ -3,5 +3,8 @@ export default /* glsl */`
 
 	uniform sampler2D map;
 
+	uniform float mapSaturation;
+	uniform vec2 mapLevel;
+
 #endif
 `;

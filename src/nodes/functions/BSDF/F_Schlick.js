@@ -7,9 +7,9 @@ const F_Schlick = /*@__PURE__*/ Fn( ( { f0, f90, dotVH } ) => {
 
 	// Optimized variant (presented by Epic at SIGGRAPH '13)
 	// https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
-	const fresnel = dotVH.mul( - 5.55473 ).sub( 6.98316 ).mul( dotVH ).exp2();
+	const fresnelFactor = dotVH.mul( - 5.55473 ).sub( 6.98316 ).mul( dotVH ).exp2() * fresnel;
 
-	return f0.mul( fresnel.oneMinus() ).add( f90.mul( fresnel ) );
+	return f0.mul( fresnelFactor.oneMinus() ).add( f90.mul( fresnelFactor ) );
 
 } ); // validated
 

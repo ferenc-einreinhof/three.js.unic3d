@@ -318,6 +318,11 @@ function WebGLBindingStates( gl, attributes ) {
 
 				let geometryAttribute = geometryAttributes[ name ];
 
+				// Fallback: use 'uv' attribute if 'uv1' is not present
+				if (name === 'uv1' && geometryAttribute === undefined) {
+					geometryAttribute = geometryAttributes['uv'];
+				}
+
 				if ( geometryAttribute === undefined ) {
 
 					if ( name === 'instanceMatrix' && object.instanceMatrix ) geometryAttribute = object.instanceMatrix;

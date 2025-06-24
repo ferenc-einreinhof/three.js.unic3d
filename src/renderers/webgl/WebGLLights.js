@@ -489,9 +489,10 @@ function WebGLLights( extensions ) {
 
 				const uniforms = state.directional[ directionalLength ];
 
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				vector3.setFromMatrixPosition( light.target.matrixWorld );
-				uniforms.direction.sub( vector3 );
+				// uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				// vector3.setFromMatrixPosition( light.target.matrixWorld );
+				// uniforms.direction.sub( vector3 );
+				uniforms.direction.setFromMatrixColumn(light.matrixWorld, 2);
 				uniforms.direction.transformDirection( viewMatrix );
 
 				directionalLength ++;
@@ -503,9 +504,10 @@ function WebGLLights( extensions ) {
 				uniforms.position.setFromMatrixPosition( light.matrixWorld );
 				uniforms.position.applyMatrix4( viewMatrix );
 
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				vector3.setFromMatrixPosition( light.target.matrixWorld );
-				uniforms.direction.sub( vector3 );
+				// uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				// vector3.setFromMatrixPosition( light.target.matrixWorld );
+				// uniforms.direction.sub( vector3 );
+				uniforms.direction.setFromMatrixColumn(light.matrixWorld, 2);
 				uniforms.direction.transformDirection( viewMatrix );
 
 				spotLength ++;

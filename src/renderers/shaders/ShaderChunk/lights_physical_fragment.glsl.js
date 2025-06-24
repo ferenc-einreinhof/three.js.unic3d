@@ -5,7 +5,7 @@ material.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );
 vec3 dxy = max( abs( dFdx( nonPerturbedNormal ) ), abs( dFdy( nonPerturbedNormal ) ) );
 float geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );
 
-material.roughness = max( roughnessFactor, 0.0525 );// 0.0525 corresponds to the base mip of a 256 cubemap.
+material.roughness = roughnessFactor;//max( roughnessFactor, 0.0525 );// 0.0525 corresponds to the base mip of a 256 cubemap.
 material.roughness += geometryRoughness;
 material.roughness = min( material.roughness, 1.0 );
 

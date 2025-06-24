@@ -520,9 +520,20 @@ class ObjectLoader extends Loader {
 
 					// load single image
 
-					const deserializedImage = deserializeImage( image.url );
-					images[ image.uuid ] = new Source( deserializedImage );
+					if (typeof image.url === 'string') {
 
+						const deserializedImage = deserializeImage( image.url );
+						images[ image.uuid ] = new Source( deserializedImage );
+	
+					} else {
+
+						scope.manager.itemStart( '' );
+						manager.itemStart( '' );
+						images[ image.uuid ] = new Source( image.url );
+						manager.itemEnd( '' );
+						scope.manager.itemEnd( '' );
+
+					}
 
 				}
 
@@ -1122,6 +1133,12 @@ class ObjectLoader extends Loader {
 
 		if ( data.castShadow !== undefined ) object.castShadow = data.castShadow;
 		if ( data.receiveShadow !== undefined ) object.receiveShadow = data.receiveShadow;
+		if ( data.wireframe !== undefined ) object.wireframe = data.wireframe;
+		if ( data.wireframeInheritParams !== undefined ) object.wireframeInheritParams = data.wireframeInheritParams;
+		if ( data.wireframeLinewidth !== undefined ) object.wireframeLinewidth = data.wireframeLinewidth;
+		if ( data.wireframeFrontColor !== undefined ) object.wireframeFrontColor.setHex(data.wireframeFrontColor);
+		if ( data.wireframeBackColor !== undefined ) object.wireframeBackColor.setHex(data.wireframeBackColor);
+		if ( data.lockToCamera !== undefined ) object.lockToCamera = data.lockToCamera;
 
 		if ( data.shadow ) {
 

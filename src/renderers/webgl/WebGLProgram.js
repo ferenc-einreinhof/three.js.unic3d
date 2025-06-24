@@ -578,6 +578,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 			parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
+			parameters.detailNormalMap ? '#define USE_DETAIL_NORMALMAP' : '',
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
 			parameters.alphaHash ? '#define USE_ALPHAHASH' : '',
 
@@ -601,6 +602,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 			parameters.metalnessMapUv ? '#define METALNESSMAP_UV ' + parameters.metalnessMapUv : '',
 			parameters.roughnessMapUv ? '#define ROUGHNESSMAP_UV ' + parameters.roughnessMapUv : '',
+			parameters.detailNormalMapUv ? '#define DETAIL_NORMALMAP_UV ' + parameters.detailNormalMapUv : '',
 
 			parameters.anisotropyMapUv ? '#define ANISOTROPYMAP_UV ' + parameters.anisotropyMapUv : '',
 
@@ -779,6 +781,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
 			parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
+			parameters.detailNormalMap ? '#define USE_DETAIL_NORMALMAP' : '',
 
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
 			parameters.alphaTest ? '#define USE_ALPHATEST' : '',
@@ -812,6 +815,13 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
 
 			parameters.premultipliedAlpha ? '#define PREMULTIPLIED_ALPHA' : '',
+
+			parameters.contourFade ? '#define CONTOUR_FADE' : '',
+
+			parameters.mipMapBias ? '#define USE_MIPMAPBIAS' : '',
+
+			parameters.roughnessColorFactor ? '#define USE_ROUGHNESS_COLOR_FACTOR ' + parameters.roughnessColorFactor : '',
+			parameters.roughnessOffset ? '#define USE_ROUGHNESS_OFFSET ' + parameters.roughnessOffset : '',
 
 			parameters.numLightProbes > 0 ? '#define USE_LIGHT_PROBES' : '',
 
@@ -881,7 +891,8 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			'#define textureCubeLodEXT textureLod',
 			'#define texture2DGradEXT textureGrad',
 			'#define texture2DProjGradEXT textureProjGrad',
-			'#define textureCubeGradEXT textureGrad'
+			'#define textureCubeGradEXT textureGrad',
+			'#define WEBGL2_VERTEX_SHADER',
 		].join( '\n' ) + '\n' + prefixFragment;
 
 	}
