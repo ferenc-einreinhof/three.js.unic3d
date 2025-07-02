@@ -44,4 +44,12 @@ export * from './src/lights/DirectionalLight.js';
 export * from './src/extras/DataUtils.js';
 export * from './src/extras/ShapeUtils.js';
 export * from './src/extras/core/Curve.js';
-
+export * from './src/renderers/WebGLRenderTarget.js';
+export * from './src/renderers/shaders/UniformsUtils.js';
+export * from './src/materials/RawShaderMaterial.js';
+export * from './src/materials/ShaderMaterial.js';
+export * from './src/materials/MeshDepthMaterial.js';
+export * from './src/materials/MeshNormalMaterial.js';
+export * from './src/textures/DepthTexture.js';
+export * from './src/textures/DataTexture.js';
+export * from './src/core/Clock.js';
