@@ -318,6 +318,7 @@ class Object3D extends EventDispatcher {
 		this.wireframeBackColor = new Color(0xccccd9);
 		this.wireframeInheritParams = true;
 		this.lockToCamera = 0;
+		this.controlCommand = '';
 
 		/**
 		 * This value allows the default rendering order of scene graph objects to be
@@ -1281,6 +1282,7 @@ class Object3D extends EventDispatcher {
 		if ( this.wireframeBackColor && this.wireframeBackColor.isColor ) object.wireframeBackColor = this.wireframeBackColor.getHex();
 		if ( this.wireframeInheritParams === true ) object.wireframeInheritParams = true;
 		if ( this.lockToCamera !== 0 ) object.lockToCamera = this.lockToCamera;
+		if ( this.controlCommand !== '' ) object.controlCommand = this.controlCommand;
 
 		if ( this.visible === false ) object.visible = false;
 		if ( this.frustumCulled === false ) object.frustumCulled = false;
@@ -1606,7 +1608,8 @@ class Object3D extends EventDispatcher {
 		this.wireframe = source.wireframe;
 		this.wireframeInheritParams = source.wireframeInheritParams;
 		this.wireframeLinewidth = source.wireframeLinewidth;
-		this.lockToCamera = source.lockToCamera;   
+		this.lockToCamera = source.lockToCamera;
+		this.controlCommand = source.controlCommand;
 
 		this.frustumCulled = source.frustumCulled;
 		this.renderOrder = source.renderOrder;

@@ -1139,6 +1139,7 @@ class ObjectLoader extends Loader {
 		if ( data.wireframeFrontColor !== undefined ) object.wireframeFrontColor.setHex(data.wireframeFrontColor);
 		if ( data.wireframeBackColor !== undefined ) object.wireframeBackColor.setHex(data.wireframeBackColor);
 		if ( data.lockToCamera !== undefined ) object.lockToCamera = data.lockToCamera;
+		if ( data.controlCommand !== undefined ) object.controlCommand = data.controlCommand;
 
 		if ( data.shadow ) {
 
