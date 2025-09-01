@@ -634,6 +634,7 @@ class Material extends EventDispatcher {
 		if ( this.mapSaturation !== undefined ) data.mapSaturation = this.mapSaturation;
 		if ( this.mapLevel !== undefined ) data.mapLevel = this.mapLevel.toArray();
 		if ( this.aoMapLevel !== undefined ) data.aoMapLevel = this.aoMapLevel.toArray();
+		if ( this.aoMapFade !== undefined ) data.aoMapFade = this.aoMapFade;
 		if ( this.alphaMapLevel !== undefined ) data.alphaMapLevel = this.alphaMapLevel.toArray();
 		if ( this.roughnessMapLevel !== undefined ) data.roughnessMapLevel = this.roughnessMapLevel.toArray();
 		if ( this.metalnessMapLevel !== undefined ) data.metalnessMapLevel = this.metalnessMapLevel.toArray();

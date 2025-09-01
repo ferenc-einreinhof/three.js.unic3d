@@ -109,6 +109,7 @@ class MeshStandardMaterial extends Material {
 		this.mapSaturation = 1.0;
 		this.mapLevel = new Vector2(0.0, 1.0);
 		this.aoMapLevel = new Vector2(0.0, 1.0);
+		this.aoMapFade = 0;
 		this.alphaMapLevel = new Vector2(0.0, 1.0);
 		this.roughnessMapLevel = new Vector2(0.0, 1.0);
 		this.metalnessMapLevel = new Vector2(0.0, 1.0);
@@ -398,6 +399,7 @@ class MeshStandardMaterial extends Material {
 		this.mapSaturation = source.mapSaturation;
 		this.mapLevel.copy(source.mapLevel);
 		this.aoMapLevel.copy(source.aoMapLevel);
+		this.aoMapFade = source.aoMapFade;
 		this.alphaMapLevel.copy(source.alphaMapLevel);
 		this.roughnessMapLevel.copy(source.roughnessMapLevel);
 		this.metalnessMapLevel.copy(source.metalnessMapLevel);
