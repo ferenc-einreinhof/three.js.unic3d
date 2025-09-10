@@ -6,6 +6,7 @@ import { Color } from '../../math/Color.js';
 import { ColorManagement } from '../../math/ColorManagement.js';
 import { Euler } from '../../math/Euler.js';
 import { Matrix4 } from '../../math/Matrix4.js';
+import { Vector2 } from '../../math/Vector2.js';
 import { Mesh } from '../../objects/Mesh.js';
 import { ShaderLib } from '../shaders/ShaderLib.js';
 import { cloneUniforms, getUnlitUniformColorSpace } from '../shaders/UniformsUtils.js';
@@ -13,6 +14,7 @@ import { cloneUniforms, getUnlitUniformColorSpace } from '../shaders/UniformsUti
 const _rgb = { r: 0, b: 0, g: 0 };
 const _e1 = /*@__PURE__*/ new Euler();
 const _m1 = /*@__PURE__*/ new Matrix4();
+const _viewSize = /*@__PURE__*/ new Vector2();
 
 function WebGLBackground( renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha ) {
 
@@ -208,6 +210,17 @@ function WebGLBackground( renderer, cubemaps, cubeuvmaps, state, objects, alpha,
 			planeMesh.material.toneMapped = ColorManagement.getTransfer( background.colorSpace ) !== SRGBTransfer;
 
 			if ( background.matrixAutoUpdate === true ) {
+
+				const mode = scene.backgroundFitMode;
+				if ( mode ) {
+					renderer.getSize( _viewSize );
+					const viewAspect = _viewSize.x / _viewSize.y;
+					const bgAspect = ( background.image?.width || 1 ) / ( background.image?.height || 1 );
+					const wide = viewAspect > bgAspect === ( mode === 1 );
+
+					background.repeat.set( wide ? viewAspect / bgAspect : 1, wide ? 1 : bgAspect / viewAspect );
+					background.offset.set( (1 - background.repeat.x) * 0.5, (1 - background.repeat.y) * 0.5 );
+				}
 
 				background.updateMatrix();
 

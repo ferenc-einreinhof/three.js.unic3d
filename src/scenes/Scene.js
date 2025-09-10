@@ -88,6 +88,17 @@ class Scene extends Object3D {
 		this.backgroundRotation = new Euler();
 
 		/**
+		 * Determines how the background image is fitted to the canvas. Only applies to
+		 * background textures. Default is `0` (stretch to fill the canvas). Other options
+		 * are `1` (contain within canvas) and `2` (cover entire canvas, cropping if
+		 * necessary).
+		 *
+		 * @type {number}
+		 * @default 0
+		 */
+		this.backgroundFitMode = 0; // 0=stretch, 1=contain, 2=cover
+
+		/**
 		 * Attenuates the color of the environment. Only influences environment maps
 		 * assigned to {@link Scene#environment}.
 		 *
@@ -169,6 +180,7 @@ class Scene extends Object3D {
 		this.backgroundBlurriness = source.backgroundBlurriness;
 		this.backgroundIntensity = source.backgroundIntensity;
 		this.backgroundRotation.copy( source.backgroundRotation );
+		this.backgroundFitMode = source.backgroundFitMode;
 
 		this.environmentIntensity = source.environmentIntensity;
 		this.environmentRotation.copy( source.environmentRotation );
@@ -199,6 +211,7 @@ class Scene extends Object3D {
 		if ( this.backgroundBlurriness > 0 ) data.object.backgroundBlurriness = this.backgroundBlurriness;
 		if ( this.backgroundIntensity !== 1 ) data.object.backgroundIntensity = this.backgroundIntensity;
 		data.object.backgroundRotation = this.backgroundRotation.toArray();
+		if ( this.backgroundFitMode !== 0 ) data.object.backgroundFitMode = this.backgroundFitMode;
 
 		if ( this.environmentIntensity !== 1 ) data.object.environmentIntensity = this.environmentIntensity;
 		data.object.environmentRotation = this.environmentRotation.toArray();
