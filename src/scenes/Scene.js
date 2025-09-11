@@ -99,6 +99,15 @@ class Scene extends Object3D {
 		this.backgroundFitMode = 0; // 0=stretch, 1=contain, 2=cover
 
 		/**
+		 * The aspect ratio of the background image. Only applies to background textures.
+		 * A value of `0` (default) means the aspect ratio is derived from the image
+		 *
+		 * @type {number}
+		 * @default 1
+		 */
+		this.backgroundAspect = 0;
+
+		/**
 		 * Attenuates the color of the environment. Only influences environment maps
 		 * assigned to {@link Scene#environment}.
 		 *
@@ -181,6 +190,7 @@ class Scene extends Object3D {
 		this.backgroundIntensity = source.backgroundIntensity;
 		this.backgroundRotation.copy( source.backgroundRotation );
 		this.backgroundFitMode = source.backgroundFitMode;
+		this.backgroundAspect = source.backgroundAspect;
 
 		this.environmentIntensity = source.environmentIntensity;
 		this.environmentRotation.copy( source.environmentRotation );
@@ -212,6 +222,7 @@ class Scene extends Object3D {
 		if ( this.backgroundIntensity !== 1 ) data.object.backgroundIntensity = this.backgroundIntensity;
 		data.object.backgroundRotation = this.backgroundRotation.toArray();
 		if ( this.backgroundFitMode !== 0 ) data.object.backgroundFitMode = this.backgroundFitMode;
+		if ( this.backgroundAspect !== 0 ) data.object.backgroundAspect = this.backgroundAspect;
 
 		if ( this.environmentIntensity !== 1 ) data.object.environmentIntensity = this.environmentIntensity;
 		data.object.environmentRotation = this.environmentRotation.toArray();
