@@ -3181,42 +3181,26 @@ class AnimationParser {
 	// PI, so we'll interpolate large rotations
 	interpolateRotations( curvex, curvey, curvez, eulerOrder ) {
 
-		const times = [];
-		const values = [];
+		const curves = { x: curvex, y: curvey, z: curvez };
 
-		// Add first frame
-		times.push( curvex.times[ 0 ] );
-		values.push( MathUtils.degToRad( curvex.values[ 0 ] ) );
-		values.push( MathUtils.degToRad( curvey.values[ 0 ] ) );
-		values.push( MathUtils.degToRad( curvez.values[ 0 ] ) );
+		const times = this.getTimesForAllAxes( curves );
 
-		for ( let i = 1; i < curvex.values.length; i ++ ) {
+		const values = this.getKeyframeTrackValues( times, curves, [ 0, 0, 0 ] );
 
+		for (let i = 1; i < times.length; i++) {
 			const initialValue = [
-				curvex.values[ i - 1 ],
-				curvey.values[ i - 1 ],
-				curvez.values[ i - 1 ],
+				values[(i-1)*3+0],
+				values[(i-1)*3+1],
+				values[(i-1)*3+2],
 			];
-
-			if ( isNaN( initialValue[ 0 ] ) || isNaN( initialValue[ 1 ] ) || isNaN( initialValue[ 2 ] ) ) {
-
-				continue;
-
-			}
-
-			const initialValueRad = initialValue.map( MathUtils.degToRad );
 
 			const currentValue = [
-				curvex.values[ i ],
-				curvey.values[ i ],
-				curvez.values[ i ],
+				values[i*3+0],
+				values[i*3+1],
+				values[i*3+2],
 			];
 
-			if ( isNaN( currentValue[ 0 ] ) || isNaN( currentValue[ 1 ] ) || isNaN( currentValue[ 2 ] ) ) {
-
-				continue;
-
-			}
+			const initialValueRad = initialValue.map( MathUtils.degToRad );
 
 			const currentValueRad = currentValue.map( MathUtils.degToRad );
 
@@ -3257,29 +3241,25 @@ class AnimationParser {
 
 				const Q = new Quaternion();
 				const E = new Euler();
-				for ( let t = 0; t < 1; t += 1 / numSubIntervals ) {
+				const step = 1 / numSubIntervals;
+				for ( let t = step; t < 1; t += step ) {
 
 					Q.copy( Q1.clone().slerp( Q2.clone(), t ) );
 
-					times.push( initialTime + t * timeSpan );
+					times.splice( i, 0, initialTime + t * timeSpan );
 					E.setFromQuaternion( Q, eulerOrder );
 
-					values.push( E.x );
-					values.push( E.y );
-					values.push( E.z );
+					values.splice( i*3 + 0, 0, MathUtils.radToDeg(E.x) );
+					values.splice( i*3 + 1, 0, MathUtils.radToDeg(E.y) );
+					values.splice( i*3 + 2, 0, MathUtils.radToDeg(E.z) );
 
+					i++;
 				}
 
-			} else {
-
-				times.push( curvex.times[ i ] );
-				values.push( MathUtils.degToRad( curvex.values[ i ] ) );
-				values.push( MathUtils.degToRad( curvey.values[ i ] ) );
-				values.push( MathUtils.degToRad( curvez.values[ i ] ) );
-
 			}
-
 		}
+
+		values.forEach((v, i) => values[i] = MathUtils.degToRad(v));
 
 		return [ times, values ];
 
