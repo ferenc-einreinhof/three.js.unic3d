@@ -199,7 +199,14 @@ class LightShadow {
 		_lightPositionWorld.setFromMatrixPosition( light.matrixWorld );
 		shadowCamera.position.copy( _lightPositionWorld );
 
-		_lookTarget.setFromMatrixPosition( light.target.matrixWorld );
+		if (light.target) {
+			_lookTarget.setFromMatrixPosition( light.target.matrixWorld );
+		} else {
+			light.updateMatrixWorld( false );
+			const e = light.matrixWorld.elements;
+			_lookTarget.set( e[12] - e[8], e[13] - e[9], e[14] - e[10] );
+		}
+
 		shadowCamera.lookAt( _lookTarget );
 		shadowCamera.updateMatrixWorld();
 
