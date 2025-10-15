@@ -9,6 +9,9 @@ function WebGLAnimation() {
 
 		animationLoop( time, frame );
 
+		// Don't request another frame if animation has been stopped in the meantime (during the callback)
+		if ( isAnimating === false ) return;
+
 		requestId = context.requestAnimationFrame( onAnimationFrame );
 
 	}
