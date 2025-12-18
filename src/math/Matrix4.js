@@ -1267,6 +1267,23 @@ class Matrix4 {
 
 	}
 
+	getRow( row, target ) {
+		target = target || new Vector3();
+
+		const te = this.elements;
+		target.set( te[ row*4+0 ], te[ row*4+1 ], te[ row*4+2 ] );
+
+		return target;
+	}
+
+	setRow( row, source ) {
+		const te = this.elements;
+		te[ row*4+0 ] = source.x;
+		te[ row*4+1 ] = source.y;
+		te[ row*4+2 ] = source.z;
+
+		return this;
+	}
 }
 
 const _v1 = /*@__PURE__*/ new Vector3();
