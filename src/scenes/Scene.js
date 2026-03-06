@@ -139,6 +139,10 @@ class Scene extends Object3D {
 		// this.environmentRotationOffset = 0;
 		this.aoMapIntensity = 1;
 
+		this.renderOpaque = true;
+		this.renderTransparent = true;
+		this.renderTransmissive = true;
+
 		if (!('fog' in this)) this.fog = null;
 
 		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {

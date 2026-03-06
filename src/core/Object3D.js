@@ -312,7 +312,7 @@ class Object3D extends EventDispatcher {
 		 */
 		this.frustumCulled = true;
 
-		this.wireframe = false;
+		this.wireframe = 0;
 		this.wireframeLinewidth = 1;
 		this.wireframeFrontColor = new Color(0x666680);
 		this.wireframeBackColor = new Color(0xccccd9);
@@ -1276,7 +1276,7 @@ class Object3D extends EventDispatcher {
 		if ( this.name !== '' ) object.name = this.name;
 		if ( this.castShadow === true ) object.castShadow = true;
 		if ( this.receiveShadow === true ) object.receiveShadow = true;
-		if ( this.wireframe === true ) object.wireframe = true;
+		if ( this.wireframe ) object.wireframe = this.wireframe;
 		if ( this.wireframeLinewidth !== 1 ) object.wireframeLinewidth = 1;
 		if ( this.wireframeFrontColor && this.wireframeFrontColor.isColor ) object.wireframeFrontColor = this.wireframeFrontColor.getHex();
 		if ( this.wireframeBackColor && this.wireframeBackColor.isColor ) object.wireframeBackColor = this.wireframeBackColor.getHex();

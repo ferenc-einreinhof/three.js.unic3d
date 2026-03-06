@@ -1839,9 +1839,9 @@ class WebGLRenderer {
 
 			if ( viewport ) state.viewport( _currentViewport.copy( viewport ) );
 
-			if ( opaqueObjects.length > 0 ) renderObjects( opaqueObjects, scene, camera );
-			if ( transmissiveObjects.length > 0 ) renderObjects( transmissiveObjects, scene, camera );
-			if ( transparentObjects.length > 0 ) renderObjects( transparentObjects, scene, camera );
+			if ( scene.renderOpaque !== false && opaqueObjects.length > 0 ) renderObjects( opaqueObjects, scene, camera );
+			if ( scene.renderTransmissive !== false && transmissiveObjects.length > 0 ) renderObjects( transmissiveObjects, scene, camera );
+			if ( scene.renderTransparent !== false && transparentObjects.length > 0 ) renderObjects( transparentObjects, scene, camera );
 
 			// Ensure depth buffer writing is enabled so it can be cleared on next render
 

@@ -1135,7 +1135,15 @@ class ObjectLoader extends Loader {
 
 		if ( data.castShadow !== undefined ) object.castShadow = data.castShadow;
 		if ( data.receiveShadow !== undefined ) object.receiveShadow = data.receiveShadow;
-		if ( data.wireframe !== undefined ) object.wireframe = data.wireframe;
+		if ( data.wireframe !== undefined ) {
+			if (data.wireframe === false) {
+				object.wireframe = 0;
+			} else if (data.wireframe === true) {
+				object.wireframe = 1;
+			} else {
+				object.wireframe = data.wireframe;
+			}
+		}
 		if ( data.wireframeInheritParams !== undefined ) object.wireframeInheritParams = data.wireframeInheritParams;
 		if ( data.wireframeLinewidth !== undefined ) object.wireframeLinewidth = data.wireframeLinewidth;
 		if ( data.wireframeFrontColor !== undefined ) object.wireframeFrontColor.setHex(data.wireframeFrontColor);
