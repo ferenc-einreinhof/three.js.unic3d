@@ -1,9 +1,12 @@
 import { Color } from '../math/Color.js';
 import { EventDispatcher } from '../core/EventDispatcher.js';
-import { FrontSide, NormalBlending, LessEqualDepth, AddEquation, OneMinusSrcAlphaFactor, SrcAlphaFactor, AlwaysStencilFunc, KeepStencilOp } from '../constants.js';
+import { FrontSide, NormalBlending, LessEqualDepth, AddEquation, OneMinusSrcAlphaFactor, SrcAlphaFactor, AlwaysStencilFunc, KeepStencilOp, TangentSpaceNormalMap } from '../constants.js';
 import { generateUUID } from '../math/MathUtils.js';
+import { Vector2 } from '../math/Vector2.js';
 
 let _materialId = 0;
+
+const v211 = new Vector2(1,1);
 
 /**
  * Abstract base class for materials.
@@ -593,6 +596,19 @@ class Material extends EventDispatcher {
 
 	}
 
+	serialize = (data, prop, def) => {
+		if (this[prop] !== undefined && this[prop] !== def) data[prop] = this[prop];
+	}
+
+	serializeText = (data, prop, meta) => {
+		if (this[prop] && this[prop].isTexture) data[prop] = this[prop].toJSON(meta).uuid;
+	}
+
+	serializeVec2 = (data, prop, def) => {
+		const v = this[prop];
+		if (v && v.isVector2 && !v.equals(def)) data[prop] = v.toArray();
+	}
+
 	/**
 	 * Serializes the material into JSON.
 	 *
@@ -700,52 +716,28 @@ class Material extends EventDispatcher {
 		if ( this.anisotropy !== undefined ) data.anisotropy = this.anisotropy;
 		if ( this.anisotropyRotation !== undefined ) data.anisotropyRotation = this.anisotropyRotation;
 
-		if ( this.anisotropyMap && this.anisotropyMap.isTexture ) {
+		this.serializeText( data, 'anisotropyMap', meta );
 
-			data.anisotropyMap = this.anisotropyMap.toJSON( meta ).uuid;
+		this.serializeText( data, 'map', meta );
+		this.serializeText( data, 'matcap', meta );
+		this.serializeText( data, 'alphaMap', meta );
 
-		}
+		this.serializeText( data, 'lightMap', meta );
+		this.serialize( data, 'lightMapIntensity', 1 );
 
-		if ( this.map && this.map.isTexture ) data.map = this.map.toJSON( meta ).uuid;
-		if ( this.matcap && this.matcap.isTexture ) data.matcap = this.matcap.toJSON( meta ).uuid;
-		if ( this.alphaMap && this.alphaMap.isTexture ) data.alphaMap = this.alphaMap.toJSON( meta ).uuid;
+		this.serializeText( data, 'aoMap', meta );
+		this.serialize( data, 'aoMapIntensity', 1 );
 
-		if ( this.lightMap && this.lightMap.isTexture ) {
+		this.serializeText( data, 'bumpMap', meta );
+		this.serialize( data, 'bumpScale', 1 );
 
-			data.lightMap = this.lightMap.toJSON( meta ).uuid;
-			data.lightMapIntensity = this.lightMapIntensity;
+		this.serializeText( data, 'normalMap', meta );
+		this.serialize( data, 'normalMapType', TangentSpaceNormalMap );
+		this.serializeVec2( data, 'normalScale', v211 );
 
-		}
-
-		if ( this.aoMap && this.aoMap.isTexture ) {
-
-			data.aoMap = this.aoMap.toJSON( meta ).uuid;
-			data.aoMapIntensity = this.aoMapIntensity;
-
-		}
-
-		if ( this.bumpMap && this.bumpMap.isTexture ) {
-
-			data.bumpMap = this.bumpMap.toJSON( meta ).uuid;
-			data.bumpScale = this.bumpScale;
-
-		}
-
-		if ( this.normalMap && this.normalMap.isTexture ) {
-
-			data.normalMap = this.normalMap.toJSON( meta ).uuid;
-			data.normalMapType = this.normalMapType;
-			data.normalScale = this.normalScale.toArray();
-
-		}
-
-		if ( this.displacementMap && this.displacementMap.isTexture ) {
-
-			data.displacementMap = this.displacementMap.toJSON( meta ).uuid;
-			data.displacementScale = this.displacementScale;
-			data.displacementBias = this.displacementBias;
-
-		}
+		this.serializeText( data, 'displacementMap', meta );
+		this.serialize( data, 'displacementScale', 1 );
+		this.serialize( data, 'displacementBias', 0 );
 
 		if ( this.roughnessMap && this.roughnessMap.isTexture ) data.roughnessMap = this.roughnessMap.toJSON( meta ).uuid;
 		if ( this.metalnessMap && this.metalnessMap.isTexture ) data.metalnessMap = this.metalnessMap.toJSON( meta ).uuid;
