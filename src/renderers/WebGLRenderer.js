@@ -1863,6 +1863,8 @@ class WebGLRenderer {
 
 			}
 
+			scene.onBeforeTransmissionRender?.( opaqueObjects, transmissiveObjects, scene, camera );
+
 			if ( currentRenderState.state.transmissionRenderTarget[ camera.id ] === undefined ) {
 
 				currentRenderState.state.transmissionRenderTarget[ camera.id ] = new WebGLRenderTarget( 1, 1, {
@@ -1972,6 +1974,8 @@ class WebGLRenderer {
 			if ( currentCameraViewport !== undefined ) camera.viewport = currentCameraViewport;
 
 			_this.toneMapping = currentToneMapping;
+
+			scene.onAfterTransmissionRender?.( opaqueObjects, transmissiveObjects, scene, camera );
 
 		}
 

@@ -318,6 +318,7 @@ class Object3D extends EventDispatcher {
 		this.wireframeBackColor = new Color(0xccccd9);
 		this.wireframeInheritParams = true;
 		this.lockToCamera = 0;
+		this.transmissiveVisibility = 0;
 		this.controlCommand = '';
 
 		/**
@@ -1282,6 +1283,7 @@ class Object3D extends EventDispatcher {
 		if ( this.wireframeBackColor && this.wireframeBackColor.isColor ) object.wireframeBackColor = this.wireframeBackColor.getHex();
 		if ( this.wireframeInheritParams === true ) object.wireframeInheritParams = true;
 		if ( this.lockToCamera !== 0 ) object.lockToCamera = this.lockToCamera;
+		if ( this.transmissiveVisibility !== 0 ) object.transmissiveVisibility = this.transmissiveVisibility;
 		if ( this.controlCommand !== '' ) object.controlCommand = this.controlCommand;
 
 		if ( this.visible === false ) object.visible = false;
@@ -1609,6 +1611,7 @@ class Object3D extends EventDispatcher {
 		this.wireframeInheritParams = source.wireframeInheritParams;
 		this.wireframeLinewidth = source.wireframeLinewidth;
 		this.lockToCamera = source.lockToCamera;
+		this.transmissiveVisibility = source.transmissiveVisibility;
 		this.controlCommand = source.controlCommand;
 
 		this.frustumCulled = source.frustumCulled;
