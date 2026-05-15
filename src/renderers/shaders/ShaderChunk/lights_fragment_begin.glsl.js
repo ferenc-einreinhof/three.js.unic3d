@@ -64,14 +64,18 @@ IncidentLight directLight;
 
 		pointLight = pointLights[ i ];
 
-		getPointLightInfo( pointLight, geometryPosition, directLight );
+		if ( ( pointLight.channel & objectChannel ) != 0 ) {
 
-		#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_POINT_LIGHT_SHADOWS )
-		pointLightShadow = pointLightShadows[ i ];
-		directLight.color *= ( directLight.visible && receiveShadow ) ? getPointShadow( pointShadowMap[ i ], pointLightShadow.shadowMapSize, pointLightShadow.shadowIntensity, pointLightShadow.shadowBias, pointLightShadow.shadowRadius, vPointShadowCoord[ i ], pointLightShadow.shadowCameraNear, pointLightShadow.shadowCameraFar ) : 1.0;
-		#endif
+			getPointLightInfo( pointLight, geometryPosition, directLight );
 
-		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+			#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_POINT_LIGHT_SHADOWS )
+			pointLightShadow = pointLightShadows[ i ];
+			directLight.color *= ( directLight.visible && receiveShadow ) ? getPointShadow( pointShadowMap[ i ], pointLightShadow.shadowMapSize, pointLightShadow.shadowIntensity, pointLightShadow.shadowBias, pointLightShadow.shadowRadius, vPointShadowCoord[ i ], pointLightShadow.shadowCameraNear, pointLightShadow.shadowCameraFar ) : 1.0;
+			#endif
+
+			RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+
+		}
 
 	}
 	#pragma unroll_loop_end
@@ -94,32 +98,36 @@ IncidentLight directLight;
 
 		spotLight = spotLights[ i ];
 
-		getSpotLightInfo( spotLight, geometryPosition, directLight );
+		if ( ( spotLight.channel & objectChannel ) != 0 ) {
 
-		// spot lights are ordered [shadows with maps, shadows without maps, maps without shadows, none]
-		#if ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS )
-		#define SPOT_LIGHT_MAP_INDEX UNROLLED_LOOP_INDEX
-		#elif ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )
-		#define SPOT_LIGHT_MAP_INDEX NUM_SPOT_LIGHT_MAPS
-		#else
-		#define SPOT_LIGHT_MAP_INDEX ( UNROLLED_LOOP_INDEX - NUM_SPOT_LIGHT_SHADOWS + NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS )
-		#endif
+			getSpotLightInfo( spotLight, geometryPosition, directLight );
 
-		#if ( SPOT_LIGHT_MAP_INDEX < NUM_SPOT_LIGHT_MAPS )
-			spotLightCoord = vSpotLightCoord[ i ].xyz / vSpotLightCoord[ i ].w;
-			inSpotLightMap = all( lessThan( abs( spotLightCoord * 2. - 1. ), vec3( 1.0 ) ) );
-			spotColor = texture2D( spotLightMap[ SPOT_LIGHT_MAP_INDEX ], spotLightCoord.xy );
-			directLight.color = inSpotLightMap ? directLight.color * spotColor.rgb : directLight.color;
-		#endif
+			// spot lights are ordered [shadows with maps, shadows without maps, maps without shadows, none]
+			#if ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS )
+			#define SPOT_LIGHT_MAP_INDEX UNROLLED_LOOP_INDEX
+			#elif ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )
+			#define SPOT_LIGHT_MAP_INDEX NUM_SPOT_LIGHT_MAPS
+			#else
+			#define SPOT_LIGHT_MAP_INDEX ( UNROLLED_LOOP_INDEX - NUM_SPOT_LIGHT_SHADOWS + NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS )
+			#endif
 
-		#undef SPOT_LIGHT_MAP_INDEX
+			#if ( SPOT_LIGHT_MAP_INDEX < NUM_SPOT_LIGHT_MAPS )
+				spotLightCoord = vSpotLightCoord[ i ].xyz / vSpotLightCoord[ i ].w;
+				inSpotLightMap = all( lessThan( abs( spotLightCoord * 2. - 1. ), vec3( 1.0 ) ) );
+				spotColor = texture2D( spotLightMap[ SPOT_LIGHT_MAP_INDEX ], spotLightCoord.xy );
+				directLight.color = inSpotLightMap ? directLight.color * spotColor.rgb : directLight.color;
+			#endif
 
-		#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )
-		spotLightShadow = spotLightShadows[ i ];
-		directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( spotShadowMap[ i ], spotLightShadow.shadowMapSize, spotLightShadow.shadowIntensity, spotLightShadow.shadowBias, spotLightShadow.shadowRadius, vSpotLightCoord[ i ] ) : 1.0;
-		#endif
+			#undef SPOT_LIGHT_MAP_INDEX
 
-		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+			#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )
+			spotLightShadow = spotLightShadows[ i ];
+			directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( spotShadowMap[ i ], spotLightShadow.shadowMapSize, spotLightShadow.shadowIntensity, spotLightShadow.shadowBias, spotLightShadow.shadowRadius, vSpotLightCoord[ i ] ) : 1.0;
+			#endif
+
+			RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+
+		}
 
 	}
 	#pragma unroll_loop_end
@@ -138,14 +146,18 @@ IncidentLight directLight;
 
 		directionalLight = directionalLights[ i ];
 
-		getDirectionalLightInfo( directionalLight, directLight );
+		if ( ( directionalLight.channel & objectChannel ) != 0 ) {
 
-		#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_DIR_LIGHT_SHADOWS )
-		directionalLightShadow = directionalLightShadows[ i ];
-		directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( directionalShadowMap[ i ], directionalLightShadow.shadowMapSize, directionalLightShadow.shadowIntensity, directionalLightShadow.shadowBias, directionalLightShadow.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;
-		#endif
+			getDirectionalLightInfo( directionalLight, directLight );
 
-		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+			#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_DIR_LIGHT_SHADOWS )
+			directionalLightShadow = directionalLightShadows[ i ];
+			directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( directionalShadowMap[ i ], directionalLightShadow.shadowMapSize, directionalLightShadow.shadowIntensity, directionalLightShadow.shadowBias, directionalLightShadow.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;
+			#endif
+
+			RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+
+		}
 
 	}
 	#pragma unroll_loop_end
@@ -160,7 +172,12 @@ IncidentLight directLight;
 	for ( int i = 0; i < NUM_RECT_AREA_LIGHTS; i ++ ) {
 
 		rectAreaLight = rectAreaLights[ i ];
-		RE_Direct_RectArea( rectAreaLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+
+		if ( ( rectAreaLight.channel & objectChannel ) != 0 ) {
+
+			RE_Direct_RectArea( rectAreaLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
+
+		}
 
 	}
 	#pragma unroll_loop_end
@@ -171,7 +188,9 @@ IncidentLight directLight;
 
 	vec3 iblIrradiance = vec3( 0.0 );
 
-	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );
+	vec3 irradiance = ( ( ambientLightChannel & objectChannel ) != 0 )
+		? getAmbientLightIrradiance( ambientLightColor )
+		: vec3( 0.0 );
 
 	#if defined( USE_LIGHT_PROBES )
 
@@ -184,7 +203,11 @@ IncidentLight directLight;
 		#pragma unroll_loop_start
 		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {
 
-			irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometryNormal );
+			if ( ( hemisphereLights[ i ].channel & objectChannel ) != 0 ) {
+
+				irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometryNormal );
+
+			}
 
 		}
 		#pragma unroll_loop_end

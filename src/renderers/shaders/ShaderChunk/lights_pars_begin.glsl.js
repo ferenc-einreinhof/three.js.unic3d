@@ -2,6 +2,11 @@ export default /* glsl */`
 uniform bool receiveShadow;
 uniform vec3 ambientLightColor;
 
+// Per-object lighting channel mask (bits 0-15). A light's contribution is
+// only added when ( light.channel & objectChannel ) != 0.
+uniform int objectChannel;
+uniform int ambientLightChannel;
+
 #if defined( USE_LIGHT_PROBES )
 
 	uniform vec3 lightProbe[ 9 ];
@@ -81,6 +86,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 	struct DirectionalLight {
 		vec3 direction;
 		vec3 color;
+		int channel;
 	};
 
 	uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
@@ -103,6 +109,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		vec3 color;
 		float distance;
 		float decay;
+		int channel;
 	};
 
 	uniform PointLight pointLights[ NUM_POINT_LIGHTS ];
@@ -135,6 +142,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		float decay;
 		float coneCos;
 		float penumbraCos;
+		int channel;
 	};
 
 	uniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];
@@ -177,6 +185,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		vec3 position;
 		vec3 halfWidth;
 		vec3 halfHeight;
+		int channel;
 	};
 
 	// Pre-computed values of LinearTransformedCosine approximation of BRDF
@@ -195,6 +204,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		vec3 direction;
 		vec3 skyColor;
 		vec3 groundColor;
+		int channel;
 	};
 
 	uniform HemisphereLight hemisphereLights[ NUM_HEMI_LIGHTS ];

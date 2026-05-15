@@ -280,6 +280,11 @@ class Object3D extends EventDispatcher {
 		 */
 		this.layers = new Layers();
 
+		// Lighting channel bitmask (bits 0-15). A light contributes to this object
+		// only when (light.channel & object.channel) != 0. Default 1 matches the
+		// default Light.channel so existing scenes behave identically.
+		this.channel = 1;
+
 		/**
 		 * When set to `true`, the 3D object gets rendered.
 		 *
@@ -1289,6 +1294,7 @@ class Object3D extends EventDispatcher {
 		if ( this.visible === false ) object.visible = false;
 		if ( this.frustumCulled === false ) object.frustumCulled = false;
 		if ( this.renderOrder !== 0 ) object.renderOrder = this.renderOrder;
+		if ( this.channel !== 1 ) object.channel = this.channel;
 		if ( this.keepExported === true ) object.keepExported = true;
 		if ( Object.keys( this.userData ).length > 0 ) object.userData = this.userData;
 
@@ -1603,6 +1609,7 @@ class Object3D extends EventDispatcher {
 		this.matrixWorldNeedsUpdate = source.matrixWorldNeedsUpdate;
 
 		this.layers.mask = source.layers.mask;
+		this.channel = source.channel;
 		this.visible = source.visible;
 
 		this.castShadow = source.castShadow;

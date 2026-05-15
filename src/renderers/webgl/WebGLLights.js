@@ -25,7 +25,8 @@ function UniformsCache() {
 				case 'DirectionalLight':
 					uniforms = {
 						direction: new Vector3(),
-						color: new Color()
+						color: new Color(),
+						channel: 1
 					};
 					break;
 
@@ -37,7 +38,8 @@ function UniformsCache() {
 						distance: 0,
 						coneCos: 0,
 						penumbraCos: 0,
-						decay: 0
+						decay: 0,
+						channel: 1
 					};
 					break;
 
@@ -46,7 +48,8 @@ function UniformsCache() {
 						position: new Vector3(),
 						color: new Color(),
 						distance: 0,
-						decay: 0
+						decay: 0,
+						channel: 1
 					};
 					break;
 
@@ -54,7 +57,8 @@ function UniformsCache() {
 					uniforms = {
 						direction: new Vector3(),
 						skyColor: new Color(),
-						groundColor: new Color()
+						groundColor: new Color(),
+						channel: 1
 					};
 					break;
 
@@ -63,7 +67,8 @@ function UniformsCache() {
 						color: new Color(),
 						position: new Vector3(),
 						halfWidth: new Vector3(),
-						halfHeight: new Vector3()
+						halfHeight: new Vector3(),
+						channel: 1
 					};
 					break;
 
@@ -179,6 +184,7 @@ function WebGLLights( extensions ) {
 		},
 
 		ambient: [ 0, 0, 0 ],
+		ambientChannel: 0,
 		probe: [],
 		directional: [],
 		directionalShadow: [],
@@ -211,6 +217,7 @@ function WebGLLights( extensions ) {
 	function setup( lights ) {
 
 		let r = 0, g = 0, b = 0;
+		let ambientChannel = 0;
 
 		for ( let i = 0; i < 9; i ++ ) state.probe[ i ].set( 0, 0, 0 );
 
@@ -246,6 +253,7 @@ function WebGLLights( extensions ) {
 				r += color.r * intensity;
 				g += color.g * intensity;
 				b += color.b * intensity;
+				ambientChannel |= ( light.channel | 0 );
 
 			} else if ( light.isLightProbe ) {
 
@@ -262,6 +270,7 @@ function WebGLLights( extensions ) {
 				const uniforms = cache.get( light );
 
 				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
+				uniforms.channel = light.channel | 0;
 
 				if ( light.castShadow ) {
 
@@ -299,6 +308,7 @@ function WebGLLights( extensions ) {
 				uniforms.coneCos = Math.cos( light.angle );
 				uniforms.penumbraCos = Math.cos( light.angle * ( 1 - light.penumbra ) );
 				uniforms.decay = light.decay;
+				uniforms.channel = light.channel | 0;
 
 				state.spot[ spotLength ] = uniforms;
 
@@ -346,6 +356,7 @@ function WebGLLights( extensions ) {
 
 				uniforms.halfWidth.set( light.width * 0.5, 0.0, 0.0 );
 				uniforms.halfHeight.set( 0.0, light.height * 0.5, 0.0 );
+				uniforms.channel = light.channel | 0;
 
 				state.rectArea[ rectAreaLength ] = uniforms;
 
@@ -358,6 +369,7 @@ function WebGLLights( extensions ) {
 				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
 				uniforms.distance = light.distance;
 				uniforms.decay = light.decay;
+				uniforms.channel = light.channel | 0;
 
 				if ( light.castShadow ) {
 
@@ -391,6 +403,7 @@ function WebGLLights( extensions ) {
 
 				uniforms.skyColor.copy( light.color ).multiplyScalar( intensity );
 				uniforms.groundColor.copy( light.groundColor ).multiplyScalar( intensity );
+				uniforms.channel = light.channel | 0;
 
 				state.hemi[ hemiLength ] = uniforms;
 
@@ -419,6 +432,7 @@ function WebGLLights( extensions ) {
 		state.ambient[ 0 ] = r;
 		state.ambient[ 1 ] = g;
 		state.ambient[ 2 ] = b;
+		state.ambientChannel = ambientChannel;
 
 		const hash = state.hash;
 

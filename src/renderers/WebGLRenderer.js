@@ -2120,6 +2120,7 @@ class WebGLRenderer {
 				// wire up the material to this renderer's lighting state
 
 				uniforms.ambientLightColor.value = lights.state.ambient;
+				uniforms.ambientLightChannel.value = lights.state.ambientChannel;
 				uniforms.lightProbe.value = lights.state.probe;
 				uniforms.directionalLights.value = lights.state.directional;
 				uniforms.directionalLightShadows.value = lights.state.directionalShadow;
@@ -2569,6 +2570,11 @@ class WebGLRenderer {
 			p_uniforms.setValue( _gl, 'modelViewMatrix', object.modelViewMatrix );
 			p_uniforms.setValue( _gl, 'normalMatrix', object.normalMatrix );
 			p_uniforms.setValue( _gl, 'modelMatrix', object.matrixWorld );
+			p_uniforms.setValue( _gl, 'objectChannel', object.channel | 0 );
+			// ambientLightChannel is a scalar — uniforms.ambientLightChannel.value captures
+			// it by value during material setup and goes stale when the early-out at the
+			// top of getProgram skips re-binding. Refresh it per-draw, like objectChannel.
+			p_uniforms.setValue( _gl, 'ambientLightChannel', currentRenderState.state.lights.state.ambientChannel | 0 );
 
 			// UBOs
 

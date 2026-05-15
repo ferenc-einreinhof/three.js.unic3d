@@ -1168,6 +1168,7 @@ class ObjectLoader extends Loader {
 		if ( data.renderOrder !== undefined ) object.renderOrder = data.renderOrder;
 		if ( data.userData !== undefined ) object.userData = data.userData;
 		if ( data.layers !== undefined ) object.layers.mask = data.layers;
+		if ( data.channel !== undefined ) object.channel = data.channel;
 
 		if ( data.children !== undefined ) {
 

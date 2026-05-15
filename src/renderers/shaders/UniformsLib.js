@@ -138,12 +138,14 @@ const UniformsLib = {
 	lights: {
 
 		ambientLightColor: { value: [] },
+		ambientLightChannel: { value: 0 },
 
 		lightProbe: { value: [] },
 
 		directionalLights: { value: [], properties: {
 			direction: {},
-			color: {}
+			color: {},
+			channel: {}
 		} },
 
 		directionalLightShadows: { value: [], properties: {
@@ -164,7 +166,8 @@ const UniformsLib = {
 			distance: {},
 			coneCos: {},
 			penumbraCos: {},
-			decay: {}
+			decay: {},
+			channel: {}
 		} },
 
 		spotLightShadows: { value: [], properties: {
@@ -183,7 +186,8 @@ const UniformsLib = {
 			color: {},
 			position: {},
 			decay: {},
-			distance: {}
+			distance: {},
+			channel: {}
 		} },
 
 		pointLightShadows: { value: [], properties: {
@@ -202,7 +206,8 @@ const UniformsLib = {
 		hemisphereLights: { value: [], properties: {
 			direction: {},
 			skyColor: {},
-			groundColor: {}
+			groundColor: {},
+			channel: {}
 		} },
 
 		// TODO (abelnation): RectAreaLight BRDF data needs to be moved from example to main src
@@ -210,7 +215,8 @@ const UniformsLib = {
 			color: {},
 			position: {},
 			width: {},
-			height: {}
+			height: {},
+			channel: {}
 		} },
 
 		ltc_1: { value: null },
