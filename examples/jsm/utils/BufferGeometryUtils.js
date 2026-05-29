@@ -1,15 +1,11 @@
-import {
-	BufferAttribute,
-	BufferGeometry,
-	Float32BufferAttribute,
-	InstancedBufferAttribute,
-	InterleavedBuffer,
-	InterleavedBufferAttribute,
-	TriangleFanDrawMode,
-	TriangleStripDrawMode,
-	TrianglesDrawMode,
-	Vector3,
-} from 'three';
+import { BufferAttribute } from 'three/src/core/BufferAttribute.js';
+import { BufferGeometry } from 'three/src/core/BufferGeometry.js';
+import { Float32BufferAttribute } from 'three/src/core/BufferAttribute.js';
+import { InstancedBufferAttribute } from 'three/src/core/InstancedBufferAttribute.js';
+import { InterleavedBuffer } from 'three/src/core/InterleavedBuffer.js';
+import { InterleavedBufferAttribute } from 'three/src/core/InterleavedBufferAttribute.js';
+import { TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode } from 'three/src/constants.js';
+import { Vector3 } from 'three/src/math/Vector3.js';
 
 /**
  * @module BufferGeometryUtils

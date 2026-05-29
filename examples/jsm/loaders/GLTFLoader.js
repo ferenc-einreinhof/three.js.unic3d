@@ -1,70 +1,68 @@
-import {
-	AnimationClip,
-	Bone,
-	Box3,
-	BufferAttribute,
-	BufferGeometry,
-	ClampToEdgeWrapping,
-	Color,
-	ColorManagement,
-	DirectionalLight,
-	DoubleSide,
-	FileLoader,
-	FrontSide,
-	Group,
-	ImageBitmapLoader,
-	InstancedMesh,
-	InterleavedBuffer,
-	InterleavedBufferAttribute,
-	Interpolant,
-	InterpolateDiscrete,
-	InterpolateLinear,
-	Line,
-	LineBasicMaterial,
-	LineLoop,
-	LineSegments,
-	LinearFilter,
-	LinearMipmapLinearFilter,
-	LinearMipmapNearestFilter,
-	LinearSRGBColorSpace,
-	Loader,
-	LoaderUtils,
-	Material,
-	MathUtils,
-	Matrix4,
-	Mesh,
-	MeshBasicMaterial,
-	MeshPhysicalMaterial,
-	MeshStandardMaterial,
-	MirroredRepeatWrapping,
-	NearestFilter,
-	NearestMipmapLinearFilter,
-	NearestMipmapNearestFilter,
-	NumberKeyframeTrack,
-	Object3D,
-	OrthographicCamera,
-	PerspectiveCamera,
-	PointLight,
-	Points,
-	PointsMaterial,
-	PropertyBinding,
-	Quaternion,
-	QuaternionKeyframeTrack,
-	RepeatWrapping,
-	Skeleton,
-	SkinnedMesh,
-	Sphere,
-	SpotLight,
-	Texture,
-	TextureLoader,
-	TriangleFanDrawMode,
-	TriangleStripDrawMode,
-	Vector2,
-	Vector3,
-	VectorKeyframeTrack,
-	SRGBColorSpace,
-	InstancedBufferAttribute
-} from 'three';
+import { AnimationClip } from 'three/src/animation/AnimationClip.js';
+import { Bone } from 'three/src/objects/Bone.js';
+import { Box3 } from 'three/src/math/Box3.js';
+import { BufferAttribute } from 'three/src/core/BufferAttribute.js';
+import { BufferGeometry } from 'three/src/core/BufferGeometry.js';
+import { ClampToEdgeWrapping } from 'three/src/constants.js';
+import { Color } from 'three/src/math/Color.js';
+import { ColorManagement } from 'three/src/math/ColorManagement.js';
+import { DirectionalLight } from 'three/src/lights/DirectionalLight.js';
+import { DoubleSide } from 'three/src/constants.js';
+import { FileLoader } from 'three/src/loaders/FileLoader.js';
+import { FrontSide } from 'three/src/constants.js';
+import { Group } from 'three/src/objects/Group.js';
+import { ImageBitmapLoader } from 'three/src/loaders/ImageBitmapLoader.js';
+import { InstancedMesh } from 'three/src/objects/InstancedMesh.js';
+import { InterleavedBuffer } from 'three/src/core/InterleavedBuffer.js';
+import { InterleavedBufferAttribute } from 'three/src/core/InterleavedBufferAttribute.js';
+import { Interpolant } from 'three/src/math/Interpolant.js';
+import { InterpolateDiscrete } from 'three/src/constants.js';
+import { InterpolateLinear } from 'three/src/constants.js';
+import { Line } from 'three/src/objects/Line.js';
+import { LineBasicMaterial } from 'three/src/materials/LineBasicMaterial.js';
+import { LineLoop } from 'three/src/objects/LineLoop.js';
+import { LineSegments } from 'three/src/objects/LineSegments.js';
+import { LinearFilter } from 'three/src/constants.js';
+import { LinearMipmapLinearFilter } from 'three/src/constants.js';
+import { LinearMipmapNearestFilter } from 'three/src/constants.js';
+import { LinearSRGBColorSpace } from 'three/src/constants.js';
+import { Loader } from 'three/src/loaders/Loader.js';
+import { LoaderUtils } from 'three/src/loaders/LoaderUtils.js';
+import { Material } from 'three/src/materials/Material.js';
+import { MathUtils } from 'three/src/math/MathUtils.js';
+import { Matrix4 } from 'three/src/math/Matrix4.js';
+import { Mesh } from 'three/src/objects/Mesh.js';
+import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial.js';
+import { MeshPhysicalMaterial } from 'three/src/materials/MeshPhysicalMaterial.js';
+import { MeshStandardMaterial } from 'three/src/materials/MeshStandardMaterial.js';
+import { MirroredRepeatWrapping } from 'three/src/constants.js';
+import { NearestFilter } from 'three/src/constants.js';
+import { NearestMipmapLinearFilter } from 'three/src/constants.js';
+import { NearestMipmapNearestFilter } from 'three/src/constants.js';
+import { NumberKeyframeTrack } from 'three/src/animation/tracks/NumberKeyframeTrack.js';
+import { Object3D } from 'three/src/core/Object3D.js';
+import { OrthographicCamera } from 'three/src/cameras/OrthographicCamera.js';
+import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera.js';
+import { PointLight } from 'three/src/lights/PointLight.js';
+import { Points } from 'three/src/objects/Points.js';
+import { PointsMaterial } from 'three/src/materials/PointsMaterial.js';
+import { PropertyBinding } from 'three/src/animation/PropertyBinding.js';
+import { Quaternion } from 'three/src/math/Quaternion.js';
+import { QuaternionKeyframeTrack } from 'three/src/animation/tracks/QuaternionKeyframeTrack.js';
+import { RepeatWrapping } from 'three/src/constants.js';
+import { Skeleton } from 'three/src/objects/Skeleton.js';
+import { SkinnedMesh } from 'three/src/objects/SkinnedMesh.js';
+import { Sphere } from 'three/src/math/Sphere.js';
+import { SpotLight } from 'three/src/lights/SpotLight.js';
+import { Texture } from 'three/src/textures/Texture.js';
+import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
+import { TriangleFanDrawMode } from 'three/src/constants.js';
+import { TriangleStripDrawMode } from 'three/src/constants.js';
+import { Vector2 } from 'three/src/math/Vector2.js';
+import { Vector3 } from 'three/src/math/Vector3.js';
+import { VectorKeyframeTrack } from 'three/src/animation/tracks/VectorKeyframeTrack.js';
+import { SRGBColorSpace } from 'three/src/constants.js';
+import { InstancedBufferAttribute } from 'three/src/core/InstancedBufferAttribute.js';
 import { toTrianglesDrawMode } from '../utils/BufferGeometryUtils.js';
 
 /**

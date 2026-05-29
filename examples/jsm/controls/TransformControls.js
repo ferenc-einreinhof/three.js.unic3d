@@ -1,25 +1,26 @@
-import {
-	BoxGeometry,
-	BufferGeometry,
-	Controls,
-	CylinderGeometry,
-	DoubleSide,
-	Euler,
-	Float32BufferAttribute,
-	Line,
-	LineBasicMaterial,
-	Matrix4,
-	Mesh,
-	MeshBasicMaterial,
-	Object3D,
-	OctahedronGeometry,
-	PlaneGeometry,
-	Quaternion,
-	Raycaster,
-	SphereGeometry,
-	TorusGeometry,
-	Vector3
-} from 'three';
+// Narrow imports per the project's convention: each named symbol from its
+// own source file so the curated `three` entry point doesn't have to enumerate
+// them. Mirrors the import style used in `src/3d/editor/Editor3d.ts` etc.
+import { BoxGeometry } from 'three/src/geometries/BoxGeometry.js';
+import { BufferGeometry } from 'three/src/core/BufferGeometry.js';
+import { Controls } from 'three/src/extras/Controls.js';
+import { CylinderGeometry } from 'three/src/geometries/CylinderGeometry.js';
+import { DoubleSide } from 'three/src/constants.js';
+import { Euler } from 'three/src/math/Euler.js';
+import { Float32BufferAttribute } from 'three/src/core/BufferAttribute.js';
+import { Line } from 'three/src/objects/Line.js';
+import { LineBasicMaterial } from 'three/src/materials/LineBasicMaterial.js';
+import { Matrix4 } from 'three/src/math/Matrix4.js';
+import { Mesh } from 'three/src/objects/Mesh.js';
+import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial.js';
+import { Object3D } from 'three/src/core/Object3D.js';
+import { OctahedronGeometry } from 'three/src/geometries/OctahedronGeometry.js';
+import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry.js';
+import { Quaternion } from 'three/src/math/Quaternion.js';
+import { Raycaster } from 'three/src/core/Raycaster.js';
+import { SphereGeometry } from 'three/src/geometries/SphereGeometry.js';
+import { TorusGeometry } from 'three/src/geometries/TorusGeometry.js';
+import { Vector3 } from 'three/src/math/Vector3.js';
 
 const _raycaster = new Raycaster();
 
