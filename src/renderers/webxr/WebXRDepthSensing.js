@@ -3,14 +3,14 @@ import { ShaderMaterial } from '../../materials/ShaderMaterial.js';
 import { Mesh } from '../../objects/Mesh.js';
 import { Texture } from '../../textures/Texture.js';
 
-const _occlusion_vertex = `
+const _occlusion_vertex = /* glsl */`
 void main() {
 
 	gl_Position = vec4( position, 1.0 );
 
 }`;
 
-const _occlusion_fragment = `
+const _occlusion_fragment = /* glsl */`
 uniform sampler2DArray depthColor;
 uniform float depthWidth;
 uniform float depthHeight;

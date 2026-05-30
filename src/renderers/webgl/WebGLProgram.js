@@ -321,7 +321,7 @@ function loopReplacer( match, start, end, snippet ) {
 
 function generatePrecision( parameters ) {
 
-	let precisionstring = `precision ${parameters.precision} float;
+	let precisionstring = /* glsl */`precision ${parameters.precision} float;
 	precision ${parameters.precision} int;
 	precision ${parameters.precision} sampler2D;
 	precision ${parameters.precision} samplerCube;
