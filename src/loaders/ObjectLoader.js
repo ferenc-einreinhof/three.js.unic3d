@@ -22,7 +22,10 @@ import { Color } from '../math/Color.js';
 import { Object3D } from '../core/Object3D.js';
 import { Group } from '../objects/Group.js';
 import { InstancedMesh } from '../objects/InstancedMesh.js';
-import { BatchedMesh } from '../objects/BatchedMesh.js';
+// FORK EDIT (bundle size): BatchedMesh import removed. io3d files never
+// serialize BatchedMesh objects, and the static import dragged ~16KB into the
+// viewer's initial chunk. The `case 'BatchedMesh'` branch in parseObject was
+// removed to match. Restore both if BatchedMesh round-tripping is ever needed.
 import { Sprite } from '../objects/Sprite.js';
 import { Points } from '../objects/Points.js';
 import { Line } from '../objects/Line.js';
@@ -33,7 +36,9 @@ import { Mesh } from '../objects/Mesh.js';
 import { SkinnedMesh } from '../objects/SkinnedMesh.js';
 import { Bone } from '../objects/Bone.js';
 import { Skeleton } from '../objects/Skeleton.js';
-import { Shape } from '../extras/core/Shape.js';
+// FORK EDIT (bundle size): Shape import removed — see parseShapes below. Shape
+// pulls in the Path/CurvePath/Curves subsystem, which the viewer never uses
+// (io3d geometry is buffer-based and parseGeometries is called without shapes).
 import { Fog } from '../scenes/Fog.js';
 import { FogExp2 } from '../scenes/FogExp2.js';
 import { HemisphereLight } from '../lights/HemisphereLight.js';
@@ -58,7 +63,13 @@ import { LoaderUtils } from './LoaderUtils.js';
 import { BufferGeometryLoader } from './BufferGeometryLoader.js';
 import { Loader } from './Loader.js';
 import { FileLoader } from './FileLoader.js';
-import * as Geometries from '../geometries/Geometries.js';
+// FORK EDIT (bundle size): the `import * as Geometries` barrel was removed.
+// The namespace import + dynamic `Geometries[data.type]` dispatch defeated
+// tree-shaking, forcing the ENTIRE geometry/curve/shape subsystem (~22KB gz:
+// Extrude, Lathe, Tube, all primitives, earcut, ShapeUtils, all curves) into
+// the bundle. io3d meshes deserialize as BufferGeometry (handled separately in
+// parseGeometries), so typed-primitive parsing is dead weight here. A legacy
+// file carrying a typed primitive now logs a warning and skips that geometry.
 import { getTypedArray } from '../utils.js';
 import { Box3 } from '../math/Box3.js';
 import { Sphere } from '../math/Sphere.js';
@@ -267,21 +278,15 @@ class ObjectLoader extends Loader {
 
 	parseShapes( json ) {
 
-		const shapes = {};
+		// FORK EDIT (bundle size): Shape support removed (see import note). The
+		// viewer never serializes shapes and calls parseGeometries without them.
+		if ( json !== undefined && json.length ) {
 
-		if ( json !== undefined ) {
-
-			for ( let i = 0, l = json.length; i < l; i ++ ) {
-
-				const shape = new Shape().fromJSON( json[ i ] );
-
-				shapes[ shape.uuid ] = shape;
-
-			}
+			console.warn( 'THREE.ObjectLoader: Shape parsing is disabled in this build.' );
 
 		}
 
-		return shapes;
+		return {};
 
 	}
 
@@ -339,15 +344,11 @@ class ObjectLoader extends Loader {
 
 					default:
 
-						if ( data.type in Geometries ) {
-
-							geometry = Geometries[ data.type ].fromJSON( data, shapes );
-
-						} else {
-
-							console.warn( `THREE.ObjectLoader: Unsupported geometry type "${ data.type }"` );
-
-						}
+						// FORK EDIT (bundle size): typed-primitive geometries are
+						// no longer supported here (Geometries barrel removed).
+						// Skip rather than crash on the `geometry.uuid` write.
+						console.warn( `THREE.ObjectLoader: Unsupported geometry type "${ data.type }"` );
+						continue;
 
 				}
 
@@ -973,88 +974,8 @@ class ObjectLoader extends Loader {
 
 				break;
 
-			case 'BatchedMesh':
-
-				geometry = getGeometry( data.geometry );
-				material = getMaterial( data.material );
-
-				object = new BatchedMesh( data.maxInstanceCount, data.maxVertexCount, data.maxIndexCount, material );
-				object.geometry = geometry;
-				object.perObjectFrustumCulled = data.perObjectFrustumCulled;
-				object.sortObjects = data.sortObjects;
-
-				object._drawRanges = data.drawRanges;
-				object._reservedRanges = data.reservedRanges;
-
-				object._geometryInfo = data.geometryInfo.map( info => {
-
-					let box = null;
-					let sphere = null;
-					if ( info.boundingBox !== undefined ) {
-
-						box = new Box3();
-						box.min.fromArray( info.boundingBox.min );
-						box.max.fromArray( info.boundingBox.max );
-
-					}
-
-					if ( info.boundingSphere !== undefined ) {
-
-						sphere = new Sphere();
-						sphere.radius = info.boundingSphere.radius;
-						sphere.center.fromArray( info.boundingSphere.center );
-
-					}
-
-					return {
-						...info,
-						boundingBox: box,
-						boundingSphere: sphere
-					};
-
-				} );
-				object._instanceInfo = data.instanceInfo;
-
-				object._availableInstanceIds = data._availableInstanceIds;
-				object._availableGeometryIds = data._availableGeometryIds;
-
-				object._nextIndexStart = data.nextIndexStart;
-				object._nextVertexStart = data.nextVertexStart;
-				object._geometryCount = data.geometryCount;
-
-				object._maxInstanceCount = data.maxInstanceCount;
-				object._maxVertexCount = data.maxVertexCount;
-				object._maxIndexCount = data.maxIndexCount;
-
-				object._geometryInitialized = data.geometryInitialized;
-
-				object._matricesTexture = getTexture( data.matricesTexture.uuid );
-
-				object._indirectTexture = getTexture( data.indirectTexture.uuid );
-
-				if ( data.colorsTexture !== undefined ) {
-
-					object._colorsTexture = getTexture( data.colorsTexture.uuid );
-
-				}
-
-				if ( data.boundingSphere !== undefined ) {
-
-					object.boundingSphere = new Sphere();
-					object.boundingSphere.center.fromArray( data.boundingSphere.center );
-					object.boundingSphere.radius = data.boundingSphere.radius;
-
-				}
-
-				if ( data.boundingBox !== undefined ) {
-
-					object.boundingBox = new Box3();
-					object.boundingBox.min.fromArray( data.boundingBox.min );
-					object.boundingBox.max.fromArray( data.boundingBox.max );
-
-				}
-
-				break;
+			// FORK EDIT (bundle size): `case 'BatchedMesh'` removed — see the
+			// BatchedMesh import note at the top of this file.
 
 			case 'LOD':
 
