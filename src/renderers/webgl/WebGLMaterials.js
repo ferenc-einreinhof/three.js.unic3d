@@ -262,7 +262,8 @@ function WebGLMaterials( renderer, properties ) {
 
 			uniforms.aoMap.value = material.aoMap;
 			uniforms.aoMapFade.value = material.aoMapFade || 0;
-			uniforms.aoMapIntensity.value = material.aoMapIntensity * scene.aoMapIntensity; 
+			uniforms.aoMapIntensity.value = material.aoMapIntensity * scene.aoMapIntensity;
+			uniforms.aoMapLevel.value.copy(material.aoMapLevel);
 
 			refreshTransformUniform( material.aoMap, uniforms.aoMapTransform );
 
