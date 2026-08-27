@@ -158,7 +158,13 @@ class Scene extends Object3D {
 	get fogDistanceMax() { return this._fog_far ?? 1000; }
 	set fogDistanceMax(v) { this.setFogParam('far', v); }
 	get fogColor() {
-		return this._fog_color ?? 0;
+		// Default kept in step with the editor's `scene.fogColor` descriptor
+		// (src/3d/properties/types/sections.ts). They used to disagree — the
+		// descriptor said 0xf0f0f0, this said 0 — so a scene that never touched fog
+		// reported one value to the property system and serialised the other,
+		// depending on whether the writer had gone through the full property set
+		// (mass publish) or a diff (the editor).
+		return this._fog_color ?? 0xf0f0f0;
 	}
 	set fogColor(v) {
 		if (v instanceof Color) v = v.getHex();
@@ -171,7 +177,12 @@ class Scene extends Object3D {
 		if (!v || v === 'none') {
 			this.fog = null;
 		} else {
-			this.fog = new Fog(this._fogColor ?? 0, this._fogDistanceMin ?? 1, this._fogDistanceMax ?? 1000);
+			// Via the getters: the backing fields are `_fog_color` / `_fog_near` /
+			// `_fog_far`, so reading `_fogColor` & co. here always saw undefined and
+			// fog came up black at 1..1000 no matter what had been configured. It
+			// only looked right when fogColor/fogDistance* happened to be written
+			// AFTER fogType, because those setters patch a live `fog` in place.
+			this.fog = new Fog(this.fogColor, this.fogDistanceMin, this.fogDistanceMax);
 		}
 	}
 
