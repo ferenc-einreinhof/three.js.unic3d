@@ -683,7 +683,9 @@ function getSingularSetter( type ) {
 		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
 		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
 		case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
-			return setValueT2DArray1;
+			// No sampler2DArray in any shader of ours.
+			if ( USE_TEXTURE_ARRAYS ) return setValueT2DArray1;
+			break;
 
 	}
 
@@ -956,7 +958,9 @@ function getPureArraySetter( type ) {
 		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
 		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
 		case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
-			return setValueT2DArrayArray;
+			// No sampler2DArray in any shader of ours.
+			if ( USE_TEXTURE_ARRAYS ) return setValueT2DArrayArray;
+			break;
 
 	}
 

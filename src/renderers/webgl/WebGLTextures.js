@@ -751,7 +751,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		let textureType = _gl.TEXTURE_2D;
 
-		if ( texture.isDataArrayTexture || texture.isCompressedArrayTexture ) textureType = _gl.TEXTURE_2D_ARRAY;
+		if ( ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) || texture.isCompressedArrayTexture ) textureType = _gl.TEXTURE_2D_ARRAY;
 		if ( USE_3D_TEXTURES && texture.isData3DTexture ) textureType = _gl.TEXTURE_3D;
 
 		const forceUpload = initTexture( textureProperties, texture );
@@ -1008,7 +1008,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 				}
 
-			} else if ( texture.isDataArrayTexture ) {
+			} else if ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) {
 
 				if ( useTexStorage ) {
 
@@ -2208,7 +2208,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	this.resetTextureUnits = resetTextureUnits;
 
 	this.setTexture2D = setTexture2D;
-	this.setTexture2DArray = setTexture2DArray;
+	// Shared with the COMPRESSED array path, so this survives USE_TEXTURE_ARRAYS
+	// alone — it only goes once compressed textures are gated off too.
+	if ( USE_TEXTURE_ARRAYS || USE_COMPRESSED_MAPS ) this.setTexture2DArray = setTexture2DArray;
 	if ( USE_3D_TEXTURES ) this.setTexture3D = setTexture3D;
 	this.setTextureCube = setTextureCube;
 	this.rebindTextures = rebindTextures;
