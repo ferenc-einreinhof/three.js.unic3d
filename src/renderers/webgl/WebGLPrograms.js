@@ -120,9 +120,9 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 		const HAS_ENVMAP = !! envMap;
 		const HAS_AOMAP = !! material.aoMap;
 		const HAS_LIGHTMAP = !! material.lightMap;
-		const HAS_BUMPMAP = !! material.bumpMap;
+		const HAS_BUMPMAP = USE_EXTRA_MAP_SLOTS && !! material.bumpMap;
 		const HAS_NORMALMAP = !! material.normalMap;
-		const HAS_DISPLACEMENTMAP = !! material.displacementMap;
+		const HAS_DISPLACEMENTMAP = USE_EXTRA_MAP_SLOTS && !! material.displacementMap;
 		const HAS_EMISSIVEMAP = !! material.emissiveMap;
 
 		const HAS_METALNESSMAP = !! material.metalnessMap;
@@ -148,7 +148,7 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 		const HAS_SHEEN_COLORMAP = HAS_SHEEN && !! material.sheenColorMap;
 		const HAS_SHEEN_ROUGHNESSMAP = HAS_SHEEN && !! material.sheenRoughnessMap;
 
-		const HAS_SPECULARMAP = !! material.specularMap;
+		const HAS_SPECULARMAP = USE_EXTRA_MAP_SLOTS && !! material.specularMap;
 		const HAS_SPECULAR_COLORMAP = !! material.specularColorMap;
 		const HAS_SPECULAR_INTENSITYMAP = !! material.specularIntensityMap;
 

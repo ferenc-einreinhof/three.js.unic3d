@@ -152,7 +152,7 @@ function WebGLMaterials( renderer, properties ) {
 
 		}
 
-		if ( material.bumpMap ) {
+		if ( USE_EXTRA_MAP_SLOTS && material.bumpMap ) {
 
 			uniforms.bumpMap.value = material.bumpMap;
 
@@ -184,7 +184,7 @@ function WebGLMaterials( renderer, properties ) {
 
 		}
 
-		if ( material.displacementMap ) {
+		if ( USE_EXTRA_MAP_SLOTS && material.displacementMap ) {
 
 			uniforms.displacementMap.value = material.displacementMap;
 
@@ -203,7 +203,7 @@ function WebGLMaterials( renderer, properties ) {
 
 		}
 
-		if ( material.specularMap ) {
+		if ( USE_EXTRA_MAP_SLOTS && material.specularMap ) {
 
 			uniforms.specularMap.value = material.specularMap;
 
