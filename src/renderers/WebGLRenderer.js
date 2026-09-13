@@ -436,7 +436,10 @@ class WebGLRenderer {
 			renderStates = new WebGLRenderStates( extensions );
 			background = new WebGLBackground( _this, cubemaps, cubeuvmaps, state, objects, _alpha, premultipliedAlpha );
 			shadowMap = new WebGLShadowMap( _this, objects, capabilities );
-			uniformsGroups = new WebGLUniformsGroups( _gl, info, capabilities, state );
+			// Uniform buffer objects. Nothing this app authors uses them — no
+			// material sets `uniformsGroups` — so the viewer build gates them off and
+			// the whole module tree-shakes away. See tools/build-flags.mts.
+			if ( USE_UNIFORM_GROUPS ) uniformsGroups = new WebGLUniformsGroups( _gl, info, capabilities, state );
 
 			bufferRenderer = new WebGLBufferRenderer( _gl, extensions, info );
 			indexedBufferRenderer = new WebGLIndexedBufferRenderer( _gl, extensions, info );
@@ -1000,7 +1003,7 @@ class WebGLRenderer {
 			cubeuvmaps.dispose();
 			objects.dispose();
 			bindingStates.dispose();
-			uniformsGroups.dispose();
+			if ( USE_UNIFORM_GROUPS ) uniformsGroups.dispose();
 			programCache.dispose();
 
 			xr.dispose();
@@ -2578,7 +2581,7 @@ class WebGLRenderer {
 
 			// UBOs
 
-			if ( material.isShaderMaterial || material.isRawShaderMaterial ) {
+			if ( USE_UNIFORM_GROUPS && ( material.isShaderMaterial || material.isRawShaderMaterial ) ) {
 
 				const groups = material.uniformsGroups;
 
