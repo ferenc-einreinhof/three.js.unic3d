@@ -3129,7 +3129,7 @@ class WebGLRenderer {
 			const glType = utils.convert( dstTexture.type );
 			let glTarget;
 
-			if ( dstTexture.isData3DTexture ) {
+			if ( USE_3D_TEXTURES && dstTexture.isData3DTexture ) {
 
 				textures.setTexture3D( dstTexture, 0 );
 				glTarget = _gl.TEXTURE_3D;
@@ -3342,7 +3342,7 @@ class WebGLRenderer {
 
 				textures.setTextureCube( texture, 0 );
 
-			} else if ( texture.isData3DTexture ) {
+			} else if ( USE_3D_TEXTURES && texture.isData3DTexture ) {
 
 				textures.setTexture3D( texture, 0 );
 

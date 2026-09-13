@@ -668,7 +668,10 @@ function getSingularSetter( type ) {
 		case 0x8b5f: // SAMPLER_3D
 		case 0x8dcb: // INT_SAMPLER_3D
 		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-			return setValueT3D1;
+			// No shader in this app declares a sampler3D. Falling through
+			// returns undefined, the same as any unrecognised type.
+			if ( USE_3D_TEXTURES ) return setValueT3D1;
+			break;
 
 		case 0x8b60: // SAMPLER_CUBE
 		case 0x8dcc: // INT_SAMPLER_CUBE
@@ -938,7 +941,10 @@ function getPureArraySetter( type ) {
 		case 0x8b5f: // SAMPLER_3D
 		case 0x8dcb: // INT_SAMPLER_3D
 		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-			return setValueT3DArray;
+			// No shader in this app declares a sampler3D. Falling through
+			// returns undefined, the same as any unrecognised type.
+			if ( USE_3D_TEXTURES ) return setValueT3DArray;
+			break;
 
 		case 0x8b60: // SAMPLER_CUBE
 		case 0x8dcc: // INT_SAMPLER_CUBE

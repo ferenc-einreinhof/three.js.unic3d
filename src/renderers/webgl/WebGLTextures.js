@@ -752,7 +752,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		let textureType = _gl.TEXTURE_2D;
 
 		if ( texture.isDataArrayTexture || texture.isCompressedArrayTexture ) textureType = _gl.TEXTURE_2D_ARRAY;
-		if ( texture.isData3DTexture ) textureType = _gl.TEXTURE_3D;
+		if ( USE_3D_TEXTURES && texture.isData3DTexture ) textureType = _gl.TEXTURE_3D;
 
 		const forceUpload = initTexture( textureProperties, texture );
 		const source = texture.source;
@@ -1050,7 +1050,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 				}
 
-			} else if ( texture.isData3DTexture ) {
+			} else if ( USE_3D_TEXTURES && texture.isData3DTexture ) {
 
 				if ( useTexStorage ) {
 
@@ -2209,7 +2209,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 	this.setTexture2D = setTexture2D;
 	this.setTexture2DArray = setTexture2DArray;
-	this.setTexture3D = setTexture3D;
+	if ( USE_3D_TEXTURES ) this.setTexture3D = setTexture3D;
 	this.setTextureCube = setTextureCube;
 	this.rebindTextures = rebindTextures;
 	this.setupRenderTarget = setupRenderTarget;
