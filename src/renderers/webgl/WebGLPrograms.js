@@ -21,19 +21,21 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 	const shaderIDs = {
 		MeshDepthMaterial: 'depth',
 		MeshDistanceMaterial: 'distanceRGBA',
-		MeshNormalMaterial: 'normal',
 		MeshBasicMaterial: 'basic',
 		MeshLambertMaterial: 'lambert',
 		MeshPhongMaterial: 'phong',
-		MeshToonMaterial: 'toon',
 		MeshStandardMaterial: 'physical',
 		MeshPhysicalMaterial: 'physical',
-		MeshMatcapMaterial: 'matcap',
 		LineBasicMaterial: 'basic',
-		LineDashedMaterial: 'dashed',
-		PointsMaterial: 'points',
-		ShadowMaterial: 'shadow',
-		SpriteMaterial: 'sprite'
+		...( USE_EXOTIC_MATERIALS ? {
+			MeshNormalMaterial: 'normal',
+			MeshToonMaterial: 'toon',
+			MeshMatcapMaterial: 'matcap',
+			LineDashedMaterial: 'dashed',
+			PointsMaterial: 'points',
+			ShadowMaterial: 'shadow',
+			SpriteMaterial: 'sprite'
+		} : {} )
 	};
 
 	function getChannel( value ) {

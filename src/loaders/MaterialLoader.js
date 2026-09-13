@@ -432,22 +432,26 @@ class MaterialLoader extends Loader {
 	static createMaterialFromType( type ) {
 
 		const materialLib = {
-			ShadowMaterial,
-			SpriteMaterial,
+			// Never present in a published model, and the app constructs none of
+			// them. LineBasicMaterial stays: two published models carry one.
+			...( USE_EXOTIC_MATERIALS ? {
+				ShadowMaterial,
+				SpriteMaterial,
+				PointsMaterial,
+				MeshToonMaterial,
+				MeshNormalMaterial,
+				MeshMatcapMaterial,
+				LineDashedMaterial,
+			} : {} ),
 			RawShaderMaterial,
 			ShaderMaterial,
-			PointsMaterial,
 			MeshPhysicalMaterial,
 			MeshStandardMaterial,
 			MeshPhongMaterial,
-			MeshToonMaterial,
-			MeshNormalMaterial,
 			MeshLambertMaterial,
 			MeshDepthMaterial,
 			MeshDistanceMaterial,
 			MeshBasicMaterial,
-			MeshMatcapMaterial,
-			LineDashedMaterial,
 			LineBasicMaterial,
 			Material
 		};
