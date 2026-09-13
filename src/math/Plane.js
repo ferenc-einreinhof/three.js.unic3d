@@ -245,23 +245,6 @@ class Plane {
 	}
 
 	/**
-	 * Returns `true` if the given line segment intersects with (passes through) the plane.
-	 *
-	 * @param {Line3} line - The line to test.
-	 * @return {boolean} Whether the given line segment intersects with the plane or not.
-	 */
-	intersectsLine( line ) {
-
-		// Note: this tests if a line intersects the plane, not whether it (or its end-points) are coplanar with it.
-
-		const startSign = this.distanceToPoint( line.start );
-		const endSign = this.distanceToPoint( line.end );
-
-		return ( startSign < 0 && endSign > 0 ) || ( endSign < 0 && startSign > 0 );
-
-	}
-
-	/**
 	 * Returns `true` if the given bounding box intersects with the plane.
 	 *
 	 * @param {Box3} box - The bounding box to test.

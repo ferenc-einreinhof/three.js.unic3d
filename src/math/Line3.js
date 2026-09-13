@@ -89,17 +89,6 @@ class Line3 {
 	}
 
 	/**
-	 * Returns the squared Euclidean distance between the line' start and end point.
-	 *
-	 * @return {number} The squared Euclidean distance.
-	 */
-	distanceSq() {
-
-		return this.start.distanceToSquared( this.end );
-
-	}
-
-	/**
 	 * Returns the Euclidean distance between the line' start and end point.
 	 *
 	 * @return {number} The Euclidean distance.

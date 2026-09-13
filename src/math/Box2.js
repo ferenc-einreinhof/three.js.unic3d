@@ -238,20 +238,6 @@ class Box2 {
 	}
 
 	/**
-	 * Returns `true` if this bounding box includes the entirety of the given bounding box.
-	 * If this box and the given one are identical, this function also returns `true`.
-	 *
-	 * @param {Box2} box - The bounding box to test.
-	 * @return {boolean} Whether the bounding box contains the given bounding box or not.
-	 */
-	containsBox( box ) {
-
-		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
-			this.min.y <= box.min.y && box.max.y <= this.max.y;
-
-	}
-
-	/**
 	 * Returns a point as a proportion of this box's width and height.
 	 *
 	 * @param {Vector2} point - A point in 2D space.

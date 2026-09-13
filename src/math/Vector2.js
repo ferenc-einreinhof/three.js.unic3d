@@ -456,25 +456,6 @@ class Vector2 {
 	}
 
 	/**
-	 * If this vector's x or y values are greater than the max value, they are
-	 * replaced by the max value.
-	 * If this vector's x or y values are less than the min value, they are
-	 * replaced by the min value.
-	 *
-	 * @param {number} minVal - The minimum value the components will be clamped to.
-	 * @param {number} maxVal - The maximum value the components will be clamped to.
-	 * @return {Vector2} A reference to this vector.
-	 */
-	clampScalar( minVal, maxVal ) {
-
-		this.x = clamp( this.x, minVal, maxVal );
-		this.y = clamp( this.y, minVal, maxVal );
-
-		return this;
-
-	}
-
-	/**
 	 * If this vector's length is greater than the max value, it is replaced by
 	 * the max value.
 	 * If this vector's length is less than the min value, it is replaced by the
@@ -529,21 +510,6 @@ class Vector2 {
 
 		this.x = Math.round( this.x );
 		this.y = Math.round( this.y );
-
-		return this;
-
-	}
-
-	/**
-	 * The components of this vector are rounded towards zero (up if negative,
-	 * down if positive) to an integer value.
-	 *
-	 * @return {Vector2} A reference to this vector.
-	 */
-	roundToZero() {
-
-		this.x = Math.trunc( this.x );
-		this.y = Math.trunc( this.y );
 
 		return this;
 
@@ -691,18 +657,6 @@ class Vector2 {
 
 		const dx = this.x - v.x, dy = this.y - v.y;
 		return dx * dx + dy * dy;
-
-	}
-
-	/**
-	 * Computes the Manhattan distance from the given vector to this instance.
-	 *
-	 * @param {Vector2} v - The vector to compute the Manhattan distance to.
-	 * @return {number} The Manhattan distance.
-	 */
-	manhattanDistanceTo( v ) {
-
-		return Math.abs( this.x - v.x ) + Math.abs( this.y - v.y );
 
 	}
 

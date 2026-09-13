@@ -459,58 +459,6 @@ class Object3D extends EventDispatcher {
 	}
 
 	/**
-	 * Sets the given rotation represented as an axis/angle couple to the 3D object.
-	 *
-	 * @param {Vector3} axis - The (normalized) axis vector.
-	 * @param {number} angle - The angle in radians.
-	 */
-	setRotationFromAxisAngle( axis, angle ) {
-
-		// assumes axis is normalized
-
-		this.quaternion.setFromAxisAngle( axis, angle );
-
-	}
-
-	/**
-	 * Sets the given rotation represented as Euler angles to the 3D object.
-	 *
-	 * @param {Euler} euler - The Euler angles.
-	 */
-	setRotationFromEuler( euler ) {
-
-		this.quaternion.setFromEuler( euler, true );
-
-	}
-
-	/**
-	 * Sets the given rotation represented as rotation matrix to the 3D object.
-	 *
-	 * @param {Matrix4} m - Although a 4x4 matrix is expected, the upper 3x3 portion must be
-	 * a pure rotation matrix (i.e, unscaled).
-	 */
-	setRotationFromMatrix( m ) {
-
-		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
-
-		this.quaternion.setFromRotationMatrix( m );
-
-	}
-
-	/**
-	 * Sets the given rotation represented as a Quaternion to the 3D object.
-	 *
-	 * @param {Quaternion} q - The Quaternion
-	 */
-	setRotationFromQuaternion( q ) {
-
-		// assumes q is normalized
-
-		this.quaternion.copy( q );
-
-	}
-
-	/**
 	 * Rotates the 3D object along an axis in local space.
 	 *
 	 * @param {Vector3} axis - The (normalized) axis vector.
@@ -1001,22 +949,6 @@ class Object3D extends EventDispatcher {
 		this.updateWorldMatrix( true, false );
 
 		this.matrixWorld.decompose( _position, target, _scale );
-
-		return target;
-
-	}
-
-	/**
-	 * Returns a vector representing the scale of the 3D object in world space.
-	 *
-	 * @param {Vector3} target - The target vector the result is stored to.
-	 * @return {Vector3} The 3D object's scale in world space.
-	 */
-	getWorldScale( target ) {
-
-		this.updateWorldMatrix( true, false );
-
-		this.matrixWorld.decompose( _position, _quaternion, target );
 
 		return target;
 

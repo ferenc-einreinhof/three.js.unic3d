@@ -251,44 +251,6 @@ class Triangle {
 	}
 
 	/**
-	 * Sets the triangle's vertices by copying the given array values.
-	 *
-	 * @param {Array<Vector3>} points - An array with 3D points.
-	 * @param {number} i0 - The array index representing the first corner of the triangle.
-	 * @param {number} i1 - The array index representing the second corner of the triangle.
-	 * @param {number} i2 - The array index representing the third corner of the triangle.
-	 * @return {Triangle} A reference to this triangle.
-	 */
-	setFromPointsAndIndices( points, i0, i1, i2 ) {
-
-		this.a.copy( points[ i0 ] );
-		this.b.copy( points[ i1 ] );
-		this.c.copy( points[ i2 ] );
-
-		return this;
-
-	}
-
-	/**
-	 * Sets the triangle's vertices by copying the given attribute values.
-	 *
-	 * @param {BufferAttribute} attribute - A buffer attribute with 3D points data.
-	 * @param {number} i0 - The attribute index representing the first corner of the triangle.
-	 * @param {number} i1 - The attribute index representing the second corner of the triangle.
-	 * @param {number} i2 - The attribute index representing the third corner of the triangle.
-	 * @return {Triangle} A reference to this triangle.
-	 */
-	setFromAttributeAndIndices( attribute, i0, i1, i2 ) {
-
-		this.a.fromBufferAttribute( attribute, i0 );
-		this.b.fromBufferAttribute( attribute, i1 );
-		this.c.fromBufferAttribute( attribute, i2 );
-
-		return this;
-
-	}
-
-	/**
 	 * Returns a new triangle with copied values from this instance.
 	 *
 	 * @return {Triangle} A clone of this instance.

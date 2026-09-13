@@ -964,32 +964,6 @@ class Matrix4 {
 	}
 
 	/**
-	 * Sets this matrix as a shear transformation.
-	 *
-	 * @param {number} xy - The amount to shear X by Y.
-	 * @param {number} xz - The amount to shear X by Z.
-	 * @param {number} yx - The amount to shear Y by X.
-	 * @param {number} yz - The amount to shear Y by Z.
-	 * @param {number} zx - The amount to shear Z by X.
-	 * @param {number} zy - The amount to shear Z by Y.
-	 * @return {Matrix4} A reference to this matrix.
-	 */
-	makeShear( xy, xz, yx, yz, zx, zy ) {
-
-		this.set(
-
-			1, yx, zx, 0,
-			xy, 1, zy, 0,
-			xz, yz, 1, 0,
-			0, 0, 0, 1
-
-		);
-
-		return this;
-
-	}
-
-	/**
 	 * Sets this matrix to the transformation composed of the given position,
 	 * rotation (Quaternion) and scale.
 	 *
@@ -1276,15 +1250,7 @@ class Matrix4 {
 		return target;
 	}
 
-	setRow( row, source ) {
-		const te = this.elements;
-		te[ row*4+0 ] = source.x;
-		te[ row*4+1 ] = source.y;
-		te[ row*4+2 ] = source.z;
-
-		return this;
 	}
-}
 
 const _v1 = /*@__PURE__*/ new Vector3();
 const _m1 = /*@__PURE__*/ new Matrix4();

@@ -212,31 +212,6 @@ class BufferAttribute {
 	}
 
 	/**
-	 * Copies a vector from the given buffer attribute to this one. The start
-	 * and destination position in the attribute buffers are represented by the
-	 * given indices.
-	 *
-	 * @param {number} index1 - The destination index into this buffer attribute.
-	 * @param {BufferAttribute} attribute - The buffer attribute to copy from.
-	 * @param {number} index2 - The source index into the given buffer attribute.
-	 * @return {BufferAttribute} A reference to this instance.
-	 */
-	copyAt( index1, attribute, index2 ) {
-
-		index1 *= this.itemSize;
-		index2 *= attribute.itemSize;
-
-		for ( let i = 0, l = this.itemSize; i < l; i ++ ) {
-
-			this.array[ index1 + i ] = attribute.array[ index2 + i ];
-
-		}
-
-		return this;
-
-	}
-
-	/**
 	 * Copies the given array data into this buffer attribute.
 	 *
 	 * @param {(TypedArray|Array)} array - The array to copy.
@@ -621,22 +596,6 @@ class BufferAttribute {
 		this.array[ index + 1 ] = y;
 		this.array[ index + 2 ] = z;
 		this.array[ index + 3 ] = w;
-
-		return this;
-
-	}
-
-	/**
-	 * Sets the given callback function that is executed after the Renderer has transferred
-	 * the attribute array data to the GPU. Can be used to perform clean-up operations after
-	 * the upload when attribute data are not needed anymore on the CPU side.
-	 *
-	 * @param {Function} callback - The `onUpload()` callback.
-	 * @return {BufferAttribute} A reference to this instance.
-	 */
-	onUpload( callback ) {
-
-		this.onUploadCallback = callback;
 
 		return this;
 

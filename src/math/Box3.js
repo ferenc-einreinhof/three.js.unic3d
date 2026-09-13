@@ -57,27 +57,6 @@ class Box3 {
 
 	/**
 	 * Sets the upper and lower bounds of this box so it encloses the position data
-	 * in the given array.
-	 *
-	 * @param {Array<number>} array - An array holding 3D position data.
-	 * @return {Box3} A reference to this bounding box.
-	 */
-	setFromArray( array ) {
-
-		this.makeEmpty();
-
-		for ( let i = 0, il = array.length; i < il; i += 3 ) {
-
-			this.expandByPoint( _vector.fromArray( array, i ) );
-
-		}
-
-		return this;
-
-	}
-
-	/**
-	 * Sets the upper and lower bounds of this box so it encloses the position data
 	 * in the given buffer attribute.
 	 *
 	 * @param {BufferAttribute} attribute - A buffer attribute holding 3D position data.
@@ -390,21 +369,6 @@ class Box3 {
 		return point.x >= this.min.x && point.x <= this.max.x &&
 			point.y >= this.min.y && point.y <= this.max.y &&
 			point.z >= this.min.z && point.z <= this.max.z;
-
-	}
-
-	/**
-	 * Returns `true` if this bounding box includes the entirety of the given bounding box.
-	 * If this box and the given one are identical, this function also returns `true`.
-	 *
-	 * @param {Box3} box - The bounding box to test.
-	 * @return {boolean} Whether the bounding box contains the given bounding box or not.
-	 */
-	containsBox( box ) {
-
-		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
-			this.min.y <= box.min.y && box.max.y <= this.max.y &&
-			this.min.z <= box.min.z && box.max.z <= this.max.z;
 
 	}
 

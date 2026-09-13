@@ -350,30 +350,6 @@ class Matrix3 {
 	}
 
 	/**
-	 * Transposes this matrix into the supplied array, and returns itself unchanged.
-	 *
-	 * @param {Array<number>} r - An array to store the transposed matrix elements.
-	 * @return {Matrix3} A reference to this matrix.
-	 */
-	transposeIntoArray( r ) {
-
-		const m = this.elements;
-
-		r[ 0 ] = m[ 0 ];
-		r[ 1 ] = m[ 3 ];
-		r[ 2 ] = m[ 6 ];
-		r[ 3 ] = m[ 1 ];
-		r[ 4 ] = m[ 4 ];
-		r[ 5 ] = m[ 7 ];
-		r[ 6 ] = m[ 2 ];
-		r[ 7 ] = m[ 5 ];
-		r[ 8 ] = m[ 8 ];
-
-		return this;
-
-	}
-
-	/**
 	 * Sets the UV transform matrix from offset, repeat, rotation, and center.
 	 *
 	 * @param {number} tx - Offset x.

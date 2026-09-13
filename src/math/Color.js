@@ -487,23 +487,6 @@ class Color {
 	}
 
 	/**
-	 * Copies the given color into this color, and then converts this color from
-	 * `LinearSRGBColorSpace` to `SRGBColorSpace`.
-	 *
-	 * @param {Color} color - The color to copy/convert.
-	 * @return {Color} A reference to this color.
-	 */
-	copyLinearToSRGB( color ) {
-
-		this.r = LinearToSRGB( color.r );
-		this.g = LinearToSRGB( color.g );
-		this.b = LinearToSRGB( color.b );
-
-		return this;
-
-	}
-
-	/**
 	 * Converts this color from `SRGBColorSpace` to `LinearSRGBColorSpace`.
 	 *
 	 * @return {Color} A reference to this color.
@@ -511,19 +494,6 @@ class Color {
 	convertSRGBToLinear() {
 
 		this.copySRGBToLinear( this );
-
-		return this;
-
-	}
-
-	/**
-	 * Converts this color from `LinearSRGBColorSpace` to `SRGBColorSpace`.
-	 *
-	 * @return {Color} A reference to this color.
-	 */
-	convertLinearToSRGB() {
-
-		this.copyLinearToSRGB( this );
 
 		return this;
 
@@ -651,24 +621,6 @@ class Color {
 	}
 
 	/**
-	 * Adds the given HSL values to this color's values.
-	 * Internally, this converts the color's RGB values to HSL, adds HSL
-	 * and then converts the color back to RGB.
-	 *
-	 * @param {number} h - Hue value between `0.0` and `1.0`.
-	 * @param {number} s - Saturation value between `0.0` and `1.0`.
-	 * @param {number} l - Lightness value between `0.0` and `1.0`.
-	 * @return {Color} A reference to this color.
-	 */
-	offsetHSL( h, s, l ) {
-
-		this.getHSL( _hslA );
-
-		return this.setHSL( _hslA.h + h, _hslA.s + s, _hslA.l + l );
-
-	}
-
-	/**
 	 * Adds the RGB values of the given color to the RGB values of this color.
 	 *
 	 * @param {Color} color - The color to add.
@@ -679,23 +631,6 @@ class Color {
 		this.r += color.r;
 		this.g += color.g;
 		this.b += color.b;
-
-		return this;
-
-	}
-
-	/**
-	 * Adds the RGB values of the given colors and stores the result in this instance.
-	 *
-	 * @param {Color} color1 - The first color.
-	 * @param {Color} color2 - The second color.
-	 * @return {Color} A reference to this color.
-	 */
-	addColors( color1, color2 ) {
-
-		this.r = color1.r + color2.r;
-		this.g = color1.g + color2.g;
-		this.b = color1.b + color2.b;
 
 		return this;
 
@@ -799,32 +734,6 @@ class Color {
 		this.r = color1.r + ( color2.r - color1.r ) * alpha;
 		this.g = color1.g + ( color2.g - color1.g ) * alpha;
 		this.b = color1.b + ( color2.b - color1.b ) * alpha;
-
-		return this;
-
-	}
-
-	/**
-	 * Linearly interpolates this color's HSL values toward the HSL values of the
-	 * given color. It differs from {@link Color#lerp} by not interpolating straight
-	 * from one color to the other, but instead going through all the hues in between
-	 * those two colors. The alpha argument can be thought of as the ratio between
-	 * the two colors, where 0.0 is this color and 1.0 is the first argument.
-	 *
-	 * @param {Color} color - The color to converge on.
-	 * @param {number} alpha - The interpolation factor in the closed interval `[0,1]`.
-	 * @return {Color} A reference to this color.
-	 */
-	lerpHSL( color, alpha ) {
-
-		this.getHSL( _hslA );
-		color.getHSL( _hslB );
-
-		const h = lerp( _hslA.h, _hslB.h, alpha );
-		const s = lerp( _hslA.s, _hslB.s, alpha );
-		const l = lerp( _hslA.l, _hslB.l, alpha );
-
-		this.setHSL( h, s, l );
 
 		return this;
 

@@ -363,23 +363,6 @@ class Vector3 {
 	}
 
 	/**
-	 * Multiplies the given vectors and stores the result in this instance.
-	 *
-	 * @param {Vector3} a - The first vector.
-	 * @param {Vector3} b - The second vector.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	multiplyVectors( a, b ) {
-
-		this.x = a.x * b.x;
-		this.y = a.y * b.y;
-		this.z = a.z * b.z;
-
-		return this;
-
-	}
-
-	/**
 	 * Applies the given Euler rotation to this vector.
 	 *
 	 * @param {Euler} euler - The Euler angles.
@@ -619,26 +602,6 @@ class Vector3 {
 	}
 
 	/**
-	 * If this vector's x, y or z values are greater than the max value, they are
-	 * replaced by the max value.
-	 * If this vector's x, y or z values are less than the min value, they are
-	 * replaced by the min value.
-	 *
-	 * @param {number} minVal - The minimum value the components will be clamped to.
-	 * @param {number} maxVal - The maximum value the components will be clamped to.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	clampScalar( minVal, maxVal ) {
-
-		this.x = clamp( this.x, minVal, maxVal );
-		this.y = clamp( this.y, minVal, maxVal );
-		this.z = clamp( this.z, minVal, maxVal );
-
-		return this;
-
-	}
-
-	/**
 	 * If this vector's length is greater than the max value, it is replaced by
 	 * the max value.
 	 * If this vector's length is less than the min value, it is replaced by the
@@ -696,22 +659,6 @@ class Vector3 {
 		this.x = Math.round( this.x );
 		this.y = Math.round( this.y );
 		this.z = Math.round( this.z );
-
-		return this;
-
-	}
-
-	/**
-	 * The components of this vector are rounded towards zero (up if negative,
-	 * down if positive) to an integer value.
-	 *
-	 * @return {Vector3} A reference to this vector.
-	 */
-	roundToZero() {
-
-		this.x = Math.trunc( this.x );
-		this.y = Math.trunc( this.y );
-		this.z = Math.trunc( this.z );
 
 		return this;
 
@@ -879,39 +826,6 @@ class Vector3 {
 	}
 
 	/**
-	 * Projects this vector onto the given one.
-	 *
-	 * @param {Vector3} v - The vector to project to.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	projectOnVector( v ) {
-
-		const denominator = v.lengthSq();
-
-		if ( denominator === 0 ) return this.set( 0, 0, 0 );
-
-		const scalar = v.dot( this ) / denominator;
-
-		return this.copy( v ).multiplyScalar( scalar );
-
-	}
-
-	/**
-	 * Projects this vector onto a plane by subtracting this
-	 * vector projected onto the plane's normal from this vector.
-	 *
-	 * @param {Vector3} planeNormal - The plane normal.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	projectOnPlane( planeNormal ) {
-
-		_vector.copy( this ).projectOnVector( planeNormal );
-
-		return this.sub( _vector );
-
-	}
-
-	/**
 	 * Reflects this vector off a plane orthogonal to the given normal vector.
 	 *
 	 * @param {Vector3} normal - The (normalized) normal vector.
@@ -971,18 +885,6 @@ class Vector3 {
 	}
 
 	/**
-	 * Computes the Manhattan distance from the given vector to this instance.
-	 *
-	 * @param {Vector3} v - The vector to compute the Manhattan distance to.
-	 * @return {number} The Manhattan distance.
-	 */
-	manhattanDistanceTo( v ) {
-
-		return Math.abs( this.x - v.x ) + Math.abs( this.y - v.y ) + Math.abs( this.z - v.z );
-
-	}
-
-	/**
 	 * Sets the vector components from the given spherical coordinates.
 	 *
 	 * @param {Spherical} s - The spherical coordinates.
@@ -1009,36 +911,6 @@ class Vector3 {
 		this.x = sinPhiRadius * Math.sin( theta );
 		this.y = Math.cos( phi ) * radius;
 		this.z = sinPhiRadius * Math.cos( theta );
-
-		return this;
-
-	}
-
-	/**
-	 * Sets the vector components from the given cylindrical coordinates.
-	 *
-	 * @param {Cylindrical} c - The cylindrical coordinates.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	setFromCylindrical( c ) {
-
-		return this.setFromCylindricalCoords( c.radius, c.theta, c.y );
-
-	}
-
-	/**
-	 * Sets the vector components from the given cylindrical coordinates.
-	 *
-	 * @param {number} radius - The radius.
-	 * @param {number} theta - The theta angle in radians.
-	 * @param {number} y - The y value.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	setFromCylindricalCoords( radius, theta, y ) {
-
-		this.x = radius * Math.sin( theta );
-		this.y = y;
-		this.z = radius * Math.cos( theta );
 
 		return this;
 
@@ -1127,23 +999,6 @@ class Vector3 {
 	}
 
 	/**
-	 * Sets the vector components from the RGB components of the
-	 * given color.
-	 *
-	 * @param {Color} c - The color to set.
-	 * @return {Vector3} A reference to this vector.
-	 */
-	setFromColor( c ) {
-
-		this.x = c.r;
-		this.y = c.g;
-		this.z = c.b;
-
-		return this;
-
-	}
-
-	/**
 	 * Returns `true` if this vector is equal with the given one.
 	 *
 	 * @param {Vector3} v - The vector to test for equality.
@@ -1219,27 +1074,6 @@ class Vector3 {
 		this.x = Math.random();
 		this.y = Math.random();
 		this.z = Math.random();
-
-		return this;
-
-	}
-
-	/**
-	 * Sets this vector to a uniformly random point on a unit sphere.
-	 *
-	 * @return {Vector3} A reference to this vector.
-	 */
-	randomDirection() {
-
-		// https://mathworld.wolfram.com/SpherePointPicking.html
-
-		const theta = Math.random() * Math.PI * 2;
-		const u = Math.random() * 2 - 1;
-		const c = Math.sqrt( 1 - u * u );
-
-		this.x = c * Math.cos( theta );
-		this.y = u;
-		this.z = c * Math.sin( theta );
 
 		return this;
 

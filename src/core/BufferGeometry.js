@@ -221,20 +221,6 @@ class BufferGeometry extends EventDispatcher {
 	}
 
 	/**
-	 * Sets the given indirect attribute to this geometry.
-	 *
-	 * @param {BufferAttribute} indirect - The attribute holding indirect draw calls.
-	 * @return {BufferGeometry} A reference to this instance.
-	 */
-	setIndirect( indirect ) {
-
-		this.indirect = indirect;
-
-		return this;
-
-	}
-
-	/**
 	 * Returns the indirect attribute of this geometry.
 	 *
 	 * @return {?BufferAttribute} The indirect attribute. Returns `null` if no indirect attribute is defined.
