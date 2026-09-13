@@ -40,7 +40,7 @@ function WebGLUtils( gl, extensions ) {
 
 		// S3TC
 
-		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format || p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
+		if ( USE_COMPRESSED_MAPS && ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format || p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) ) {
 
 			if ( transfer === SRGBTransfer ) {
 
@@ -82,7 +82,7 @@ function WebGLUtils( gl, extensions ) {
 
 		// PVRTC
 
-		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format || p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
+		if ( USE_COMPRESSED_MAPS && ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format || p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
 
@@ -103,7 +103,7 @@ function WebGLUtils( gl, extensions ) {
 
 		// ETC
 
-		if ( p === RGB_ETC1_Format || p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format ) {
+		if ( USE_COMPRESSED_MAPS && ( p === RGB_ETC1_Format || p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format ) ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_etc' );
 
@@ -122,11 +122,11 @@ function WebGLUtils( gl, extensions ) {
 
 		// ASTC
 
-		if ( p === RGBA_ASTC_4x4_Format || p === RGBA_ASTC_5x4_Format || p === RGBA_ASTC_5x5_Format ||
+		if ( USE_COMPRESSED_MAPS && ( p === RGBA_ASTC_4x4_Format || p === RGBA_ASTC_5x4_Format || p === RGBA_ASTC_5x5_Format ||
 			p === RGBA_ASTC_6x5_Format || p === RGBA_ASTC_6x6_Format || p === RGBA_ASTC_8x5_Format ||
 			p === RGBA_ASTC_8x6_Format || p === RGBA_ASTC_8x8_Format || p === RGBA_ASTC_10x5_Format ||
 			p === RGBA_ASTC_10x6_Format || p === RGBA_ASTC_10x8_Format || p === RGBA_ASTC_10x10_Format ||
-			p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format ) {
+			p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format ) ) {
 
 			extension = extensions.get( 'WEBGL_compressed_texture_astc' );
 
@@ -157,7 +157,7 @@ function WebGLUtils( gl, extensions ) {
 
 		// BPTC
 
-		if ( p === RGBA_BPTC_Format || p === RGB_BPTC_SIGNED_Format || p === RGB_BPTC_UNSIGNED_Format ) {
+		if ( USE_COMPRESSED_MAPS && ( p === RGBA_BPTC_Format || p === RGB_BPTC_SIGNED_Format || p === RGB_BPTC_UNSIGNED_Format ) ) {
 
 			extension = extensions.get( 'EXT_texture_compression_bptc' );
 
@@ -177,7 +177,7 @@ function WebGLUtils( gl, extensions ) {
 
 		// RGTC
 
-		if ( p === RED_RGTC1_Format || p === SIGNED_RED_RGTC1_Format || p === RED_GREEN_RGTC2_Format || p === SIGNED_RED_GREEN_RGTC2_Format ) {
+		if ( USE_COMPRESSED_MAPS && ( p === RED_RGTC1_Format || p === SIGNED_RED_RGTC1_Format || p === RED_GREEN_RGTC2_Format || p === SIGNED_RED_GREEN_RGTC2_Format ) ) {
 
 			extension = extensions.get( 'EXT_texture_compression_rgtc' );
 

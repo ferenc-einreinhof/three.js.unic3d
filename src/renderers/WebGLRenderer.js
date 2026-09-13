@@ -3134,7 +3134,7 @@ class WebGLRenderer {
 				textures.setTexture3D( dstTexture, 0 );
 				glTarget = _gl.TEXTURE_3D;
 
-			} else if ( ( USE_TEXTURE_ARRAYS && dstTexture.isDataArrayTexture ) || dstTexture.isCompressedArrayTexture ) {
+			} else if ( ( USE_TEXTURE_ARRAYS && dstTexture.isDataArrayTexture ) || ( USE_COMPRESSED_MAPS && dstTexture.isCompressedArrayTexture ) ) {
 
 				textures.setTexture2DArray( dstTexture, 0 );
 				glTarget = _gl.TEXTURE_2D_ARRAY;
@@ -3346,7 +3346,7 @@ class WebGLRenderer {
 
 				textures.setTexture3D( texture, 0 );
 
-			} else if ( ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) || texture.isCompressedArrayTexture ) {
+			} else if ( ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) || ( USE_COMPRESSED_MAPS && texture.isCompressedArrayTexture ) ) {
 
 				textures.setTexture2DArray( texture, 0 );
 

@@ -121,7 +121,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		if ( texture.isWebGLCubeRenderTarget ) return _gl.TEXTURE_CUBE_MAP;
 		if ( texture.isWebGL3DRenderTarget ) return _gl.TEXTURE_3D;
-		if ( texture.isWebGLArrayRenderTarget || texture.isCompressedArrayTexture ) return _gl.TEXTURE_2D_ARRAY;
+		if ( texture.isWebGLArrayRenderTarget || ( USE_COMPRESSED_MAPS && texture.isCompressedArrayTexture ) ) return _gl.TEXTURE_2D_ARRAY;
 		return _gl.TEXTURE_2D;
 
 	}
@@ -751,7 +751,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		let textureType = _gl.TEXTURE_2D;
 
-		if ( ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) || texture.isCompressedArrayTexture ) textureType = _gl.TEXTURE_2D_ARRAY;
+		if ( ( USE_TEXTURE_ARRAYS && texture.isDataArrayTexture ) || ( USE_COMPRESSED_MAPS && texture.isCompressedArrayTexture ) ) textureType = _gl.TEXTURE_2D_ARRAY;
 		if ( USE_3D_TEXTURES && texture.isData3DTexture ) textureType = _gl.TEXTURE_3D;
 
 		const forceUpload = initTexture( textureProperties, texture );
@@ -872,7 +872,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 				}
 
-			} else if ( texture.isCompressedTexture ) {
+			} else if ( USE_COMPRESSED_MAPS && texture.isCompressedTexture ) {
 
 				if ( texture.isCompressedArrayTexture ) {
 
@@ -1205,7 +1205,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			_gl.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );
 			_gl.pixelStorei( _gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion );
 
-			const isCompressed = ( texture.isCompressedTexture || texture.image[ 0 ].isCompressedTexture );
+			const isCompressed = USE_COMPRESSED_MAPS && ( texture.isCompressedTexture || texture.image[ 0 ].isCompressedTexture );
 			const isDataTexture = ( texture.image[ 0 ] && texture.image[ 0 ].isDataTexture );
 
 			const cubeImage = [];
