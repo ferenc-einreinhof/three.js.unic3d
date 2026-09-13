@@ -325,9 +325,9 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 			skinning: object.isSkinnedMesh === true,
 
-			morphTargets: geometry.morphAttributes.position !== undefined,
-			morphNormals: geometry.morphAttributes.normal !== undefined,
-			morphColors: geometry.morphAttributes.color !== undefined,
+			morphTargets: USE_MORPH_TARGETS && geometry.morphAttributes.position !== undefined,
+			morphNormals: USE_MORPH_TARGETS && geometry.morphAttributes.normal !== undefined,
+			morphColors: USE_MORPH_TARGETS && geometry.morphAttributes.color !== undefined,
 			morphTargetsCount: morphTargetsCount,
 			morphTextureStride: morphTextureStride,
 

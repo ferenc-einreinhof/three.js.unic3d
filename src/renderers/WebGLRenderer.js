@@ -428,7 +428,9 @@ class WebGLRenderer {
 			bindingStates = new WebGLBindingStates( _gl, attributes );
 			geometries = new WebGLGeometries( _gl, attributes, info, bindingStates );
 			objects = new WebGLObjects( _gl, geometries, attributes, info );
-			morphtargets = new WebGLMorphtargets( _gl, capabilities, textures );
+			// No published model has morph attributes; the chunks this feeds are
+			// nulled in ShaderChunk. See tools/build-flags.mts.
+			if ( USE_MORPH_TARGETS ) morphtargets = new WebGLMorphtargets( _gl, capabilities, textures );
 			clipping = new WebGLClipping( properties );
 			programCache = new WebGLPrograms( _this, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping );
 			materials = new WebGLMaterials( _this, properties );
@@ -2495,7 +2497,7 @@ class WebGLRenderer {
 
 			if ( morphAttributes.position !== undefined || morphAttributes.normal !== undefined || ( morphAttributes.color !== undefined ) ) {
 
-				morphtargets.update( object, geometry, program );
+				if ( USE_MORPH_TARGETS ) morphtargets.update( object, geometry, program );
 
 			}
 
