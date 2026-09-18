@@ -741,13 +741,20 @@ class AnimationAction {
 			}
 
 			handle_stop: {
-				const scaledDuration = Math.abs(duration * this.timeScale);
+				// `time` was advanced by `deltaTime * timeScale` in _update(), so it is
+				// measured in CLIP seconds: the segment is over at `duration` however
+				// fast it was played, and how much REAL time that took is the caller's
+				// business, not this loop's. Bounding it by `duration * timeScale`
+				// applied the speed a second time — at 0.5 the segment was cut off
+				// halfway and snapped to its end, at 2 it ran on past the end into
+				// whatever follows it in the physical clip. LoopRepeat below always
+				// wrapped at `duration`, which is why only LoopOnce misbehaved.
 
-				if ( time >= scaledDuration ) {
+				if ( time >= duration ) {
 
 					time = duration;
 
-				} else if ( time <= -scaledDuration ) {
+				} else if ( time <= -duration ) {
 
 					time = -duration;
 
