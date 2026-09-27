@@ -2189,6 +2189,8 @@ class WebGLRenderer {
 			materialProperties.vertexAlphas = parameters.vertexAlphas;
 			materialProperties.vertexTangents = parameters.vertexTangents;
 			materialProperties.toneMapping = parameters.toneMapping;
+			materialProperties.aoMapBlur = !! parameters.aoMapBlur;
+			materialProperties.alphaMapBlur = !! parameters.alphaMapBlur;
 
 		}
 
@@ -2345,6 +2347,14 @@ class WebGLRenderer {
 
 				} else if ( materialProperties.morphTargetsCount !== morphTargetsCount ) {
 
+					needsProgramChange = true;
+
+				} else if ( materialProperties.aoMapBlur !== ( !! material.aoMap && material.aoMapBlur > 0 ) ||
+					materialProperties.alphaMapBlur !== ( !! material.alphaMap && material.alphaMapBlur > 0 ) ) {
+
+					// The blur is a shader variant, and an animation writes the value without
+					// bumping the material's version. Leaving or reaching 0 recompiles once;
+					// a model that animates it keeps it just above 0 to have that happen at load.
 					needsProgramChange = true;
 
 				}

@@ -2,9 +2,11 @@ export default /* glsl */`
 #ifdef USE_AOMAP
 
 	// reads channel R, compatible with a combined OcclusionRoughnessMetallic (RGB) texture
-	vec4 textVal;
-	if ( aoMapBlur > 0.0 ) textVal = textureBlurred( aoMap, vAoMapUv, aoMapBlur );
-	else textVal = texture2D( aoMap, vAoMapUv );
+	#ifdef USE_AOMAP_BLUR
+		vec4 textVal = textureBlurred( aoMap, vAoMapUv, aoMapBlur );
+	#else
+		vec4 textVal = texture2D( aoMap, vAoMapUv );
+	#endif
 	float val = (mix(textVal.r, textVal.a, aoMapFade) - aoMapLevel.x) / aoMapLevel.y;
 
 	float ambientOcclusion = ( val - 1.0 ) * aoMapIntensity + 1.0;

@@ -3,9 +3,13 @@ export default /* glsl */`
 
 	uniform sampler2D alphaMap;
 	uniform vec2 alphaMapLevel;
-	uniform float alphaMapBlur;
+	#ifdef USE_ALPHAMAP_BLUR
 
-	#include <blurred_texture_pars_fragment>
+		uniform float alphaMapBlur;
+
+		#include <blurred_texture_pars_fragment>
+
+	#endif
 
 #endif
 `;

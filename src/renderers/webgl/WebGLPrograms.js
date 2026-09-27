@@ -167,6 +167,8 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 		const HAS_CONTOUR_FADE = !! material.contourFade;
 		const HAS_MIPMAP_BIAS = !! material.mipMapBias;
+		const HAS_AOMAP_BLUR = HAS_AOMAP && material.aoMapBlur > 0;
+		const HAS_ALPHAMAP_BLUR = HAS_ALPHAMAP && material.alphaMapBlur > 0;
 		const HAS_ROUGHNESS_COLOR_FACTOR = !!material.roughnessColorFactor && material.roughnessColorFactor.lengthSq() > 0;
 		const HAS_ROUGHNESS_OFFSET = !!material.roughnessOffset && material.roughnessOffset.lengthSq() > 0;
 
@@ -265,6 +267,8 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 			contourFade: HAS_CONTOUR_FADE,
 			mipMapBias: HAS_MIPMAP_BIAS,
+			aoMapBlur: HAS_AOMAP_BLUR,
+			alphaMapBlur: HAS_ALPHAMAP_BLUR,
 			roughnessColorFactor: HAS_ROUGHNESS_COLOR_FACTOR,
 			roughnessOffset: HAS_ROUGHNESS_OFFSET,
 
@@ -482,6 +486,8 @@ function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities
 
 		array.push( parameters.contourFade );
 		array.push( parameters.mipMapBias );
+		array.push( parameters.aoMapBlur );
+		array.push( parameters.alphaMapBlur );
 		array.push( parameters.roughnessColorFactor );
 		array.push( parameters.roughnessOffset );
 		

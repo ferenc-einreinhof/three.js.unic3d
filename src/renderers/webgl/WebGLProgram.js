@@ -755,6 +755,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			envMapCubeUVSize ? '#define CUBEUV_MAX_MIP ' + envMapCubeUVSize.maxMip + '.0' : '',
 			parameters.lightMap ? '#define USE_LIGHTMAP' : '',
 			parameters.aoMap ? '#define USE_AOMAP' : '',
+			parameters.aoMapBlur ? '#define USE_AOMAP_BLUR' : '',
 			parameters.bumpMap ? '#define USE_BUMPMAP' : '',
 			parameters.normalMap ? '#define USE_NORMALMAP' : '',
 			parameters.normalMapObjectSpace ? '#define USE_NORMALMAP_OBJECTSPACE' : '',
@@ -784,6 +785,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.detailNormalMap ? '#define USE_DETAIL_NORMALMAP' : '',
 
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+			parameters.alphaMapBlur ? '#define USE_ALPHAMAP_BLUR' : '',
 			parameters.alphaTest ? '#define USE_ALPHATEST' : '',
 			parameters.alphaHash ? '#define USE_ALPHAHASH' : '',
 

@@ -7,8 +7,10 @@ export default /* glsl */`
 	// it), so the look is the same at any texture resolution and camera distance. It needs the texture's mipmaps:
 	// without them it reads the full-size image and does nothing.
 	//
-	// Included from each *_pars_fragment that uses it, hence the guard. Call it only
-	// under a uniform condition: it takes screen-space derivatives.
+	// Included from each *_pars_fragment that uses it, hence the guard. Those include
+	// it only in the USE_*_BLUR variant, which a material gets while its blur is
+	// above 0 (WebGLPrograms): at 0 the program has no blur code at all. It takes
+	// screen-space derivatives, so call it outside any per-pixel condition.
 	vec4 textureBlurred( sampler2D tex, vec2 uv, float blur ) {
 
 		vec2 size = vec2( textureSize( tex, 0 ) );
