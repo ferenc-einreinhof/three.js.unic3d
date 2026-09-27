@@ -19,6 +19,7 @@ const UniformsLib = {
 
 		alphaMap: { value: null },
 		alphaMapLevel: { value: new Vector2(0.0, 1.0) },
+		alphaMapBlur: { value: 0.0 },
 		alphaMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 
 		alphaTest: { value: 0 }
@@ -50,6 +51,7 @@ const UniformsLib = {
 		aoMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 		aoMapLevel: { value: new Vector2(0.0, 1.0) },
 		aoMapFade: { value: 0.0 },
+		aoMapBlur: { value: 0.0 },
 
 	},
 

@@ -5,6 +5,9 @@ export default /* glsl */`
 	uniform float aoMapIntensity;
 	uniform vec2 aoMapLevel;
 	uniform float aoMapFade;
+	uniform float aoMapBlur;
+
+	#include <blurred_texture_pars_fragment>
 
 #endif
 `;

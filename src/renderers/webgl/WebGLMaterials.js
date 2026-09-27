@@ -147,6 +147,7 @@ function WebGLMaterials( renderer, properties ) {
 
 			uniforms.alphaMap.value = material.alphaMap;
 			uniforms.alphaMapLevel.value.copy(material.alphaMapLevel);
+			uniforms.alphaMapBlur.value = material.alphaMapBlur || 0;
 
 			refreshTransformUniform( material.alphaMap, uniforms.alphaMapTransform );
 
@@ -262,6 +263,7 @@ function WebGLMaterials( renderer, properties ) {
 
 			uniforms.aoMap.value = material.aoMap;
 			uniforms.aoMapFade.value = material.aoMapFade || 0;
+			uniforms.aoMapBlur.value = material.aoMapBlur || 0;
 			uniforms.aoMapIntensity.value = material.aoMapIntensity * scene.aoMapIntensity;
 			uniforms.aoMapLevel.value.copy(material.aoMapLevel);
 

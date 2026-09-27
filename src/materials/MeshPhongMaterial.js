@@ -83,6 +83,8 @@ class MeshPhongMaterial extends Material {
 		this.aoMapLevel = new Vector2(0.0, 1.0);
 		this.aoMapFade = 0;
 		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.aoMapBlur = 0;
+		this.alphaMapBlur = 0;
 		this.mipMapBias = 0;
 
 		/**
@@ -372,6 +374,8 @@ class MeshPhongMaterial extends Material {
 		this.aoMapLevel.copy(source.aoMapLevel);
 		this.aoMapFade = source.aoMapFade;
 		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.aoMapBlur = source.aoMapBlur;
+		this.alphaMapBlur = source.alphaMapBlur;
 		this.mipMapBias = source.mipMapBias;
 
 		this.lightMap = source.lightMap;

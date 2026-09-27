@@ -111,6 +111,8 @@ class MeshStandardMaterial extends Material {
 		this.aoMapLevel = new Vector2(0.0, 1.0);
 		this.aoMapFade = 0;
 		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.aoMapBlur = 0;
+		this.alphaMapBlur = 0;
 		this.roughnessMapLevel = new Vector2(0.0, 1.0);
 		this.metalnessMapLevel = new Vector2(0.0, 1.0);
 		this.roughnessOffset = new Vector2( 0.0, 0.0 );
@@ -401,6 +403,8 @@ class MeshStandardMaterial extends Material {
 		this.aoMapLevel.copy(source.aoMapLevel);
 		this.aoMapFade = source.aoMapFade;
 		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.aoMapBlur = source.aoMapBlur;
+		this.alphaMapBlur = source.alphaMapBlur;
 		this.roughnessMapLevel.copy(source.roughnessMapLevel);
 		this.metalnessMapLevel.copy(source.metalnessMapLevel);
 		this.roughnessOffset.copy(source.roughnessOffset);

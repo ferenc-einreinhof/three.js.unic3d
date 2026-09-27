@@ -2,6 +2,7 @@ import alphahash_fragment from './ShaderChunk/alphahash_fragment.glsl.js';
 import alphahash_pars_fragment from './ShaderChunk/alphahash_pars_fragment.glsl.js';
 import alphamap_fragment from './ShaderChunk/alphamap_fragment.glsl.js';
 import alphamap_pars_fragment from './ShaderChunk/alphamap_pars_fragment.glsl.js';
+import blurred_texture_pars_fragment from './ShaderChunk/blurred_texture_pars_fragment.glsl.js';
 import alphatest_fragment from './ShaderChunk/alphatest_fragment.glsl.js';
 import alphatest_pars_fragment from './ShaderChunk/alphatest_pars_fragment.glsl.js';
 import aomap_fragment from './ShaderChunk/aomap_fragment.glsl.js';
@@ -132,6 +133,7 @@ export const ShaderChunk = {
 	alphahash_pars_fragment: alphahash_pars_fragment,
 	alphamap_fragment: alphamap_fragment,
 	alphamap_pars_fragment: alphamap_pars_fragment,
+	blurred_texture_pars_fragment: blurred_texture_pars_fragment,
 	alphatest_fragment: alphatest_fragment,
 	alphatest_pars_fragment: alphatest_pars_fragment,
 	aomap_fragment: aomap_fragment,

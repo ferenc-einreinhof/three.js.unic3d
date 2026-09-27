@@ -136,7 +136,9 @@ class MaterialLoader extends Loader {
 		if ( json.mapLevel !== undefined ) material.mapLevel = new Vector2().fromArray(json.mapLevel);
 		if ( json.aoMapLevel !== undefined ) material.aoMapLevel = new Vector2().fromArray(json.aoMapLevel);
 		if ( json.aoMapFade !== undefined ) material.aoMapFade = json.aoMapFade;
+		if ( json.aoMapBlur !== undefined ) material.aoMapBlur = json.aoMapBlur;
 		if ( json.alphaMapLevel !== undefined ) material.alphaMapLevel = new Vector2().fromArray(json.alphaMapLevel);
+		if ( json.alphaMapBlur !== undefined ) material.alphaMapBlur = json.alphaMapBlur;
 		if ( json.roughnessMapLevel !== undefined ) material.roughnessMapLevel = new Vector2().fromArray(json.roughnessMapLevel);
 		if ( json.metalnessMapLevel !== undefined ) material.metalnessMapLevel = new Vector2().fromArray(json.metalnessMapLevel);
 		if ( json.detailNormalScale !== undefined ) material.detailNormalScale = json.detailNormalScale;

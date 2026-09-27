@@ -49,6 +49,7 @@ class MeshDistanceMaterial extends Material {
 		this.mapSaturation = 1.0;
 		this.mapLevel = new Vector2(0.0, 1.0);
 		this.alphaMapLevel = new Vector2(0.0, 1.0);
+		this.alphaMapBlur = 0;
 		this.mipMapBias = 0;
 
 		/**
@@ -111,6 +112,7 @@ class MeshDistanceMaterial extends Material {
 		this.mapSaturation = source.mapSaturation;
 		this.mapLevel.copy(source.mapLevel);
 		this.alphaMapLevel.copy(source.alphaMapLevel);
+		this.alphaMapBlur = source.alphaMapBlur;
 		this.mipMapBias = source.mipMapBias;
 
 		this.alphaMap = source.alphaMap;
