@@ -8,7 +8,8 @@ import {
 	RGBAFormat,
 	HalfFloatType,
 	BackSide,
-	LinearSRGBColorSpace
+	LinearSRGBColorSpace,
+	SRGBColorSpace
 } from '../constants.js';
 
 import { BufferAttribute } from '../core/BufferAttribute.js';
@@ -19,6 +20,7 @@ import { PerspectiveCamera } from '../cameras/PerspectiveCamera.js';
 import { ShaderMaterial } from '../materials/ShaderMaterial.js';
 import { Vector3 } from '../math/Vector3.js';
 import { Color } from '../math/Color.js';
+import { SRGBToLinear } from '../math/ColorManagement.js';
 import { WebGLRenderTarget } from '../renderers/WebGLRenderTarget.js';
 import { MeshBasicMaterial } from '../materials/MeshBasicMaterial.js';
 import { BoxGeometry } from '../geometries/BoxGeometry.js';
@@ -450,6 +452,15 @@ class PMREMGenerator {
 
 			}
 
+			// unic3d: highlightBoost / highlightThreshold lift the brightest parts of an
+			// 8-bit image above 1, so a JPG environment can light a scene like an HDR one.
+			// The threshold means the value as seen in the image: for an sRGB texture the
+			// shader samples decoded (linear) values, so it is decoded the same way.
+			const threshold = Math.min( texture.highlightThreshold ?? 0.9, 0.999 );
+			this._equirectMaterial.uniforms.highlightBoost.value = texture.highlightBoost || 0;
+			this._equirectMaterial.uniforms.highlightThreshold.value =
+				texture.colorSpace === SRGBColorSpace ? SRGBToLinear( threshold ) : threshold;
+
 		}
 
 		const material = isCubeTexture ? this._cubemapMaterial : this._equirectMaterial;
@@ -823,7 +834,9 @@ function _getEquirectMaterial() {
 		name: 'EquirectangularToCubeUV',
 
 		uniforms: {
-			'envMap': { value: null }
+			'envMap': { value: null },
+			'highlightBoost': { value: 0 },
+			'highlightThreshold': { value: 0.9 }
 		},
 
 		vertexShader: _getCommonVertexShader(),
@@ -836,6 +849,8 @@ function _getEquirectMaterial() {
 			varying vec3 vOutputDirection;
 
 			uniform sampler2D envMap;
+			uniform float highlightBoost;
+			uniform float highlightThreshold;
 
 			#include <common>
 
@@ -844,7 +859,15 @@ function _getEquirectMaterial() {
 				vec3 outputDirection = normalize( vOutputDirection );
 				vec2 uv = equirectUv( outputDirection );
 
-				gl_FragColor = vec4( texture2D ( envMap, uv ).rgb, 1.0 );
+				vec3 color = texture2D ( envMap, uv ).rgb;
+
+				// unic3d: an 8-bit image clips per channel, so the brightest channel is
+				// what says "this was a light". Squared ramp: no visible edge where the
+				// boost starts; scaling all three channels keeps the hue.
+				float t = clamp( ( max( color.r, max( color.g, color.b ) ) - highlightThreshold ) / ( 1.0 - highlightThreshold ), 0.0, 1.0 );
+				color *= 1.0 + highlightBoost * t * t;
+
+				gl_FragColor = vec4( color, 1.0 );
 
 			}
 		`,
